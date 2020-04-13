@@ -1,0 +1,6 @@
+// LOGIN
+mysql -u USERNAME -p
+
+show databases;
+
+select host, user from mysql.user;
