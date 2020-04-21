@@ -4,3 +4,6 @@ mysql -u USERNAME -p
 show databases;
 
 select host, user from mysql.user;
+
+run mysql script
+source \home\user\Desktop\test.sql;
