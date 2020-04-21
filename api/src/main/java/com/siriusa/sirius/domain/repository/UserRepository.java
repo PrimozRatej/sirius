@@ -1,6 +1,6 @@
-package com.siriusa.sirius.repository;
+package com.siriusa.sirius.domain.repository;
 
-import com.siriusa.sirius.model.UserDTO;
+import com.siriusa.sirius.domain.model.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
