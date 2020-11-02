@@ -1,2 +1,2 @@
-# sirius
-Primerjava razvoja spletnih aplikacij na platformah ASP.NET MVC, Blazor in  Flutter.
+# Sirius project
+COMPARISON OF WEB APPLICATION DEVELOPMENT ON ASP.NET MVC, BLAZOR AND FLUTTER PLATFORMS
