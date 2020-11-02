@@ -15,8 +15,6 @@ public class CategoryDTO {
     
     private String description;
 
-    private String color;
-
     public Integer getId() {
         return id;
     }
@@ -40,14 +38,4 @@ public class CategoryDTO {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-
 }

@@ -18,26 +18,26 @@ public class TagController {
     TagRepository repository;
 
     // Get All Tags
-    @GetMapping("/tags")
+    @GetMapping("/tag")
     public List<TagDTO> getAll() {
         return repository.findAll();
     }
 
     // Create a new Tag
-    @PostMapping("/tags")
+    @PostMapping("/tag")
     public TagDTO create(@Valid @RequestBody TagDTO entry) {
         return repository.save(entry);
     }
 
     // Get a Single Tag
-    @GetMapping("/tags/{id}")
+    @GetMapping("/tag/{id}")
     public TagDTO getById(@PathVariable(value = "id") Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", id));
     }
 
     // Update a Tag
-    @PutMapping("/tags/{id}")
+    @PutMapping("/tag/{id}")
     public TagDTO update(@PathVariable(value = "id") Integer id,
                                             @Valid @RequestBody TagDTO entry) {
 
@@ -51,7 +51,7 @@ public class TagController {
     }
 
     // Delete a Tag
-    @DeleteMapping("/tags/{id}")
+    @DeleteMapping("/tag/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Integer id) {
         TagDTO obj = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", id));

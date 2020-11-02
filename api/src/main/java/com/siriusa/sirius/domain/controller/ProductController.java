@@ -17,26 +17,26 @@ public class ProductController {
     ProductRepository repository;
 
     // Get All Products
-    @GetMapping("/products")
+    @GetMapping("/product")
     public List<ProductDTO> getAll() {
         return repository.findAll();
     }
 
     // Create a new Product
-    @PostMapping("/products")
+    @PostMapping("/product")
     public ProductDTO create(@Valid @RequestBody ProductDTO entry) {
         return repository.save(entry);
     }
 
     // Get a Single Product
-    @GetMapping("/products/{id}")
+    @GetMapping("/product/{id}")
     public ProductDTO getById(@PathVariable(value = "id") Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
 
     // Update a Product
-    @PutMapping("/products/{id}")
+    @PutMapping("/product/{id}")
     public ProductDTO update(@PathVariable(value = "id") Integer id,
                                             @Valid @RequestBody ProductDTO entry) {
 
@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     // Delete a Product
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/product/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Integer id) {
         ProductDTO obj = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));

@@ -11,19 +11,23 @@ public class ProductDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String barcode_num;
+
+    private String barcode_url;
+
     private Integer category_id;
-    
+
     private String name;
 
     private String description;
 
     private String image_url;
 
-    private String video_url;
+    private String video_url_yt;
 
-    private String price;
+    private Double price;
 
-    private String currency;
+    private String currency_code;
 
     public Integer getId() {
         return id;
@@ -31,6 +35,22 @@ public class ProductDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getBarcode_num() {
+        return barcode_num;
+    }
+
+    public void setBarcode_num(String barcode_num) {
+        this.barcode_num = barcode_num;
+    }
+
+    public String getBarcode_url() {
+        return barcode_url;
+    }
+
+    public void setBarcode_url(String barcode_url) {
+        this.barcode_url = barcode_url;
     }
 
     public Integer getCategory_id() {
@@ -65,27 +85,27 @@ public class ProductDTO {
         this.image_url = image_url;
     }
 
-    public String getVideo_url() {
-        return video_url;
+    public String getVideo_url_yt() {
+        return video_url_yt;
     }
 
-    public void setVideo_url(String video_url) {
-        this.video_url = video_url;
+    public void setVideo_url_yt(String video_url_yt) {
+        this.video_url_yt = video_url_yt;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getCurrency_code() {
+        return currency_code;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrency_code(String currency_code) {
+        this.currency_code = currency_code;
     }
 }

@@ -18,26 +18,26 @@ public class UserController {
     UserRepository repository;
 
     // Get All Users
-    @GetMapping("/users")
+    @GetMapping("/user")
     public List<UserDTO> getAll() {
         return repository.findAll();
     }
 
     // Create a new User
-    @PostMapping("/users")
+    @PostMapping("/user")
     public UserDTO create(@Valid @RequestBody UserDTO entry) {
         return repository.save(entry);
     }
 
     // Get a Single User
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     public UserDTO getById(@PathVariable(value = "id") Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
 
     // Update a User
-    @PutMapping("/users/{id}")
+    @PutMapping("/user/{id}")
     public UserDTO update(@PathVariable(value = "id") Integer id,
                                             @Valid @RequestBody UserDTO entry) {
 
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     // Delete a User
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Integer id) {
         UserDTO obj = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
