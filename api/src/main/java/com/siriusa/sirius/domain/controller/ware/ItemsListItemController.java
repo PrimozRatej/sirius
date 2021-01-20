@@ -1,16 +1,11 @@
-package com.siriusa.sirius.domain.controller;
+package com.siriusa.sirius.domain.controller.ware;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-
 import com.siriusa.sirius.domain.controller.ProductController;
-import com.siriusa.sirius.domain.model.AddressDTO;
 import com.siriusa.sirius.domain.model.ProductDTO;
 import com.siriusa.sirius.domain.model.ware.ItemsListItemDTO;
-import com.siriusa.sirius.domain.repository.AddressRepository;
-import com.siriusa.sirius.exception.ResourceNotFoundException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,10 +15,18 @@ public class ItemsListItemController {
     public List<ItemsListItemDTO> getAll() {
         ProductController controller = new ProductController();
         List<ProductDTO> list = controller.getAll();
-        for(Integer i; i < list.size(); i++)
+        List<ItemsListItemDTO> listItems = new ArrayList<>();
+        for(Integer i = 0; i < list.size(); i++)
         {
             ItemsListItemDTO dto = new ItemsListItemDTO();
-            dto.
+            dto.setId(list.get(i).getId());
+            dto.setImgurImgPath(list.get(i).getImage_url());
+            dto.setBarCodeNum(list.get(i).getBarcode_num());
+            dto.setName(list.get(i).getName());
+            dto.setQuantity(5.0);
+            dto.setQuaType("Type");
+            listItems.add(dto);
         }
+        return listItems;
     }
 }
