@@ -2,7 +2,6 @@ SELECT SYSDATE() as timestamp, 'start product.sql' as decsription;
 create table product
 (
 	id INT PRIMARY KEY,
-	barcode_num INTEGER,
 	barcode_url VARCHAR(2048),
 	category_id INT NOT NULL,
 	name VARCHAR(250) NOT NULL,

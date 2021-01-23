@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'assets/assets.dart';
+
 Color backgroundColor = Color(0xFFFFFFFF);
 
 class MenuDashboardPage extends StatefulWidget {
@@ -8,7 +9,8 @@ class MenuDashboardPage extends StatefulWidget {
   _MenuDashboardPageState createState() => _MenuDashboardPageState();
 }
 
-class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTickerProviderStateMixin {
+class _MenuDashboardPageState extends State<MenuDashboardPage>
+    with SingleTickerProviderStateMixin {
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   final Duration duration = const Duration(milliseconds: 300);
@@ -20,10 +22,12 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: duration);
+    _controller = AnimationController(duration: duration, vsync: null);
     _scaleAnimation = Tween<double>(begin: 1, end: 0.8).animate(_controller);
-    _menuScaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(_controller);
-    _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0)).animate(_controller);
+    _menuScaleAnimation =
+        Tween<double>(begin: 0.5, end: 1).animate(_controller);
+    _slideAnimation = Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+        .animate(_controller);
   }
 
   @override
@@ -72,22 +76,24 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                         image: new DecorationImage(
                             fit: BoxFit.fill,
                             image: new NetworkImage(
-                                "https://i.imgur.com/BoN9kdC.png")
-                        )
-                    )),
-                Text("John Doe", style: TextStyle(color: Colors.white, fontSize: 26)),
-                Text("San Francisco, CA", style: TextStyle(color: Colors.white, fontSize: 26)),
-
+                                "https://i.imgur.com/BoN9kdC.png")))),
+                Text("John Doe",
+                    style: TextStyle(color: Colors.white, fontSize: 26)),
+                Text("San Francisco, CA",
+                    style: TextStyle(color: Colors.white, fontSize: 26)),
                 SizedBox(height: 60),
                 Row(
                   children: [
                     FlatButton(
                       onPressed: () => {},
                       padding: EdgeInsets.all(10.0),
-                      child: Row( // Replace with a Row for horizontal icon + text
+                      child: Row(
+                        // Replace with a Row for horizontal icon + text
                         children: <Widget>[
                           Icon(Icons.dashboard, color: Colors.white),
-                          Text("Dashboard",style: TextStyle(color: Colors.white, fontSize: 16))
+                          Text("Dashboard",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16))
                         ],
                       ),
                     ),
@@ -99,10 +105,13 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                     FlatButton(
                       onPressed: () => {},
                       padding: EdgeInsets.all(10.0),
-                      child: Row( // Replace with a Row for horizontal icon + text
+                      child: Row(
+                        // Replace with a Row for horizontal icon + text
                         children: <Widget>[
                           Icon(Icons.shopping_basket, color: Colors.white),
-                          Text("Items     ",style: TextStyle(color: Colors.white, fontSize: 16)),
+                          Text("Items     ",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
                         ],
                       ),
                     ),
@@ -114,10 +123,13 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                     FlatButton(
                       onPressed: () => {},
                       padding: EdgeInsets.all(10.0),
-                      child: Row( // Replace with a Row for horizontal icon + text
+                      child: Row(
+                        // Replace with a Row for horizontal icon + text
                         children: <Widget>[
                           Icon(Icons.person, color: Colors.white),
-                          Text("Customers",style: TextStyle(color: Colors.white, fontSize: 16))
+                          Text("Customers",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16))
                         ],
                       ),
                     ),
@@ -129,10 +141,13 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                     FlatButton(
                       onPressed: () => {},
                       padding: EdgeInsets.all(10.0),
-                      child: Row( // Replace with a Row for horizontal icon + text
+                      child: Row(
+                        // Replace with a Row for horizontal icon + text
                         children: <Widget>[
                           Icon(Icons.folder, color: Colors.white),
-                          Text("Packages",style: TextStyle(color: Colors.white, fontSize: 16))
+                          Text("Packages",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16))
                         ],
                       ),
                     ),
@@ -176,11 +191,10 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                         child: Icon(Icons.menu, color: Colors.black),
                         onTap: () {
                           setState(() {
-                            if (isCollapsed){
+                            if (isCollapsed) {
                               _controller.forward();
                               backgroundColor = Color(0xFF4A4A58);
-                            }
-                            else{
+                            } else {
                               _controller.reverse();
                               backgroundColor = Color(0xFFFFFFFF);
                             }
@@ -188,12 +202,8 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                           });
                         },
                       ),
-                      Image.network(
-                        Assets.siriusNavBarLogoBlack,
-                        width: 145,
-                        height: 50,
-                        fit:BoxFit.fill 
-                      ),
+                      Image.network(Assets.siriusNavBarLogoBlack,
+                          width: 145, height: 50, fit: BoxFit.fill),
                       Icon(Icons.settings, color: Colors.white),
                     ],
                   ),
@@ -224,18 +234,23 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                     ),
                   ),
                   SizedBox(height: 20),
-                  Text("Transactions", style: TextStyle(color: Colors.white, fontSize: 20),),
+                  Text(
+                    "Transactions",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
                   ListView.separated(
-                    shrinkWrap: true,
+                      shrinkWrap: true,
                       itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text("Macbook"),
-                      subtitle: Text("Apple"),
-                      trailing: Text("-2900"),
-                    );
-                  }, separatorBuilder: (context, index) {
-                    return Divider(height: 16);
-                  }, itemCount: 10)
+                        return ListTile(
+                          title: Text("Macbook"),
+                          subtitle: Text("Apple"),
+                          trailing: Text("-2900"),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider(height: 16);
+                      },
+                      itemCount: 10)
                 ],
               ),
             ),

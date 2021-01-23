@@ -4,6 +4,6 @@ create table order_item (
 	order_id INT NOT NULL,
 	product_id INT NOT NULL,
 	quantity INT NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (order_id) REFERENCES order(id),
     FOREIGN KEY (product_id) REFERENCES product(id)
 );

@@ -1,3 +1,0 @@
-SELECT SYSDATE() as timestamp, 'start orders_v.sql' as decsription;
-#insert into orders (id, user_id, address_id, discount_id, created, modified, status, amount, currency) values (1, 68, 75, 99, '2019-07-15 16:04:25', '2019-12-09 12:27:14', 'AFM', '311.41', 'PHP');
-#insert into orders (id, user_id, address_id, discount_id, created, modified, status, amount, currency) values (2, 30, 37, 98, '2019-08-18 00:11:38', '2020-02-14 09:36:24', 'APP', '228.82', 'EUR');

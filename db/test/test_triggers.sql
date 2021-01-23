@@ -1,5 +1,5 @@
-# trg_before_insert_orders_addressExistsInUser
-INSERT INTO sirius.orders(id, user_id, address_id, discount_id, order_status_code, currency_code, created, modified, amount) 
+# trg_before_insert_order_addressExistsInUser
+INSERT INTO sirius.order(id, user_id, address_id, discount_id, order_status_code, currency_code, created, modified, amount) 
 VALUES(1,1,2,null,'AFF','ALL',SYSDATE(), SYSDATE(), 1);
 
 # trg_before_insert_user_registeredIsLessThanLastLogin

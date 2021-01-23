@@ -1,7 +1,7 @@
 DELIMITER $$
-CREATE TRIGGER trg_before_insert_orders_addressExistsInUser 
+CREATE TRIGGER trg_before_insert_order_addressExistsInUser 
 BEFORE INSERT 
-ON sirius.orders FOR EACH ROW
+ON sirius.order FOR EACH ROW
 BEGIN
    IF (NEW.address_id NOT IN (SELECT ad.id FROM address ad WHERE ad.user_id = NEW.user_id )) THEN
       signal sqlstate '45000' set message_text = 'Address like this dont exist for this user';
@@ -65,12 +65,12 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE TRIGGER trg_before_update_orders_idCantUpdate
+CREATE TRIGGER trg_before_update__idCantUpdate
 BEFORE UPDATE
-ON sirius.orders FOR EACH ROW
+ON sirius.order FOR EACH ROW
 BEGIN
-   IF ((SELECT u.id FROM orders u WHERE u.id = NEW.id) IS NULL) THEN
-      signal sqlstate '45000' set message_text = 'Orders id can\'t be changed.';
+   IF ((SELECT u.id FROM sirius.order u WHERE u.id = NEW.id) IS NULL) THEN
+      signal sqlstate '45000' set message_text = 'Order id can\'t be changed.';
     END IF;
 END$$    
 DELIMITER ;

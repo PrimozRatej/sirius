@@ -1,5 +1,6 @@
 // LOGIN
 mysql -u USERNAME -p
+mysql -u root -p
 
 show databases;
 
@@ -7,3 +8,9 @@ select host, user from mysql.user;
 
 run mysql script
 source \home\user\Desktop\test.sql;
+
+// When savig pictures in drive
+https://drive.google.com/uc?id=1Pz_01i2itDW1QZmSMuHen3WZYAJJ3pTV
+https://drive.google.com/uc?id={picId}
+
+https://drive.google.com/uc?id=10My7c0CNds52BXsStxoHD6L2J401WIk9
