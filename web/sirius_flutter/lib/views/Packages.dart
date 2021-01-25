@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CustomersComponnet extends StatelessWidget {
+class PackagesComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Custumers"),
+        title: Text("Packages"),
       ),
       body: Center(
         child: RaisedButton(

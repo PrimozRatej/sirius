@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class NotificationPage extends StatelessWidget {
+// ignore: must_be_immutable
+class NotificationComponent extends StatelessWidget {
   NotificationController controller = new NotificationController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Notifications"),
-        backgroundColor: Colors.black,
-      ),
-      body: controller.buildListView(context)
-    );
+        appBar: AppBar(
+          title: Text("Notifications"),
+          backgroundColor: Colors.black,
+        ),
+        body: controller.buildListView(context));
   }
 }
 
-class NotificationDTO{
+class NotificationDTO {
   int id;
   // 1 = error, 2 = notification
   String type;
   String msg;
   DateTime date;
-  
-  List<NotificationDTO> getStaticData()
-  {
+
+  List<NotificationDTO> getStaticData() {
     List<NotificationDTO> myList = List<NotificationDTO>(4);
     NotificationDTO dto1 = new NotificationDTO();
     dto1.id = 23543;
@@ -46,7 +45,8 @@ class NotificationDTO{
     NotificationDTO dto4 = new NotificationDTO();
     dto4.id = 23545;
     dto4.type = 'error';
-    dto4.msg = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.';
+    dto4.msg =
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.';
     dto4.date = new DateTime(2020, 7, 5);
 
     myList[0] = dto1;
@@ -58,8 +58,7 @@ class NotificationDTO{
   }
 }
 
-class NotificationController
-{
+class NotificationController {
   NotificationDTO dto = new NotificationDTO();
 
   Widget buildListView(BuildContext context) {
@@ -67,12 +66,11 @@ class NotificationController
     final f = new DateFormat('dd-MM-yyyy hh:mm');
     for (NotificationDTO item in dto.getStaticData()) {
       children.add(Card(
-        child: ListTile(
-          leading: Icon(Icons.warning),
-          title: Text(item.msg),
-          subtitle: Text(f.format(item.date)),
-        )
-      ));   
+          child: ListTile(
+        leading: Icon(Icons.warning),
+        title: Text(item.msg),
+        subtitle: Text(f.format(item.date)),
+      )));
     }
     return ListView(children: children);
   }

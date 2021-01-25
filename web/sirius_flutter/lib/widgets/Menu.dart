@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/assets/assets.dart';
-import 'package:sirius_flutter/views/customers.dart';
-import 'package:sirius_flutter/views/dashboard.dart';
-import 'package:sirius_flutter/views/items.dart';
-import 'package:sirius_flutter/views/notifications.dart';
-import 'package:sirius_flutter/views/packages.dart';
+import 'package:sirius_flutter/views/Customers.dart';
+import 'package:sirius_flutter/views/Dashboard.dart';
+import 'package:sirius_flutter/views/Notifications.dart';
+import 'package:sirius_flutter/views/Packages.dart';
+import 'package:sirius_flutter/views/Products.dart';
 
 class Menu extends StatefulWidget {
   createState() => _MenuState();
@@ -12,7 +12,7 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   // Def. value for body.
-  Widget body = DashboardComponnet();
+  Widget body = DashboardComponent();
 
   // Method for changing state of a body and closing drawer.
   changeBody(Widget bodyToChange) {
@@ -37,7 +37,8 @@ class _MenuState extends State<Menu> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationPage()),
+                  MaterialPageRoute(
+                      builder: (context) => NotificationComponent()),
                 );
               })
         ],
@@ -97,7 +98,7 @@ class _MenuState extends State<Menu> {
               leading: Icon(Icons.dashboard),
               title: Text('Dashboard'),
               onTap: () {
-                changeBody(DashboardComponnet());
+                changeBody(DashboardComponent());
               },
             ),
             ExpansionTile(
@@ -109,7 +110,7 @@ class _MenuState extends State<Menu> {
                 leading: Icon(Icons.shopping_basket),
                 title: Text('Items'),
                 onTap: () {
-                  changeBody(ItemsComponnet());
+                  changeBody(ProductsComponent());
                 },
               ),
               children: <Widget>[
@@ -118,7 +119,7 @@ class _MenuState extends State<Menu> {
                       Icon(Icons.arrow_right_alt, color: Colors.transparent),
                   title: Text('Item Groups'),
                   onTap: () {
-                    // changeBody(ItemsComponnet());
+                    // changeBody(ItemsComponent());
                   },
                 ),
                 ListTile(
@@ -126,7 +127,7 @@ class _MenuState extends State<Menu> {
                       Icon(Icons.arrow_right_alt, color: Colors.transparent),
                   title: Text('Items'),
                   onTap: () {
-                    // changeBody(ItemsComponnet());
+                    // changeBody(ItemsComponent());
                   },
                 ),
                 ListTile(
@@ -134,7 +135,7 @@ class _MenuState extends State<Menu> {
                       Icon(Icons.arrow_right_alt, color: Colors.transparent),
                   title: Text('Inventory Adjustments'),
                   onTap: () {
-                    // changeBody(ItemsComponnet());
+                    // changeBody(ItemsComponent());
                   },
                 ),
               ],
@@ -143,14 +144,14 @@ class _MenuState extends State<Menu> {
               leading: Icon(Icons.person),
               title: Text('Customers'),
               onTap: () {
-                changeBody(CustomersComponnet());
+                changeBody(CustomersComponent());
               },
             ),
             ListTile(
               leading: Icon(Icons.folder),
               title: Text('Packages'),
               onTap: () {
-                changeBody(PackagesComponnet());
+                changeBody(PackagesComponent());
               },
             ),
           ],

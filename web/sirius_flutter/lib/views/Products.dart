@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/widgets/ItemsSearchBar.dart';
 import 'package:http/http.dart' as http;
-import 'package:sirius_flutter/widgets/ListItemItems.dart';
+import 'package:sirius_flutter/widgets/ProductItem.dart';
 
-class ItemsComponnet extends StatefulWidget {
-  createState() => _ItemsComponnet();
+class ProductsComponent extends StatefulWidget {
+  createState() => _ProductsComponent();
 }
 
-class _ItemsComponnet extends State<ItemsComponnet> {
+class _ProductsComponent extends State<ProductsComponent> {
   ItemsController itemsController;
   Future<ListItemDTO> futureListItemDTO;
 
@@ -22,9 +22,9 @@ class _ItemsComponnet extends State<ItemsComponnet> {
 
   @override
   Widget build(BuildContext context) {
-    final children = <ListItemItem>[];
+    final children = <ProductItem>[];
     for (var i = 0; i < 10; i++) {
-      children.add(ListItemItem());
+      children.add(ProductItem());
     }
     return ListView(
       children: [

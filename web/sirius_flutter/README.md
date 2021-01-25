@@ -25,3 +25,4 @@ $ flutter devices  //downloads sky_engine and sdk tools then shows a list of dev
 
 $ flutter create test_app
 $ flutter run -d chrome  //local host will run chrome
+$ flutter run -d chrome --web-port=42457 // always run on same port

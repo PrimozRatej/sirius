@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_flutter/widgets/menu.dart';
+import 'package:sirius_flutter/widgets/Menu.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -11,4 +11,3 @@ void main() {
     home: Menu(),
   ));
 }
-

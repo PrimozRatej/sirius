@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class DashboardComponnet extends StatefulWidget {
-  createState() => _DashboardComponnet();
+class DashboardComponent extends StatefulWidget {
+  createState() => _DashboardComponent();
 }
 
-class _DashboardComponnet extends State<DashboardComponnet> {
+class _DashboardComponent extends State<DashboardComponent> {
   DashBoardController dashBoardController;
   Future<DashBoardDTO> futureDashBoardDTO;
 
@@ -62,7 +62,7 @@ class _DashboardComponnet extends State<DashboardComponnet> {
                       child: new RaisedButton(
                           padding: EdgeInsets.all(0.0),
                           elevation: 30.0,
-                          color: Colors.blue.shade300,
+                          color: Colors.green.shade300,
                           highlightElevation: 0.0,
                           onPressed: () {
                             setState(() {
@@ -132,7 +132,7 @@ class _DashboardComponnet extends State<DashboardComponnet> {
                   ),
                   subtitle: Text('Quantity to be packed'),
                   onTap: () {
-                    // changeBody(DashboardComponnet());
+                    // changeBody(DashboardComponent());
                   },
                   trailing: Icon(
                     Icons.chevron_right,
@@ -162,7 +162,7 @@ class _DashboardComponnet extends State<DashboardComponnet> {
                   ),
                   subtitle: Text('Packages to be shipped'),
                   onTap: () {
-                    // changeBody(DashboardComponnet());
+                    // changeBody(DashboardComponent());
                   },
                   trailing: Icon(
                     Icons.chevron_right,
@@ -192,7 +192,7 @@ class _DashboardComponnet extends State<DashboardComponnet> {
                   ),
                   subtitle: Text('Packages to be delivered'),
                   onTap: () {
-                    // changeBody(DashboardComponnet());
+                    // changeBody(DashboardComponent());
                   },
                   trailing: Icon(
                     Icons.chevron_right,
@@ -222,7 +222,7 @@ class _DashboardComponnet extends State<DashboardComponnet> {
                   ),
                   subtitle: Text('Quantity to be invoiced'),
                   onTap: () {
-                    // changeBody(DashboardComponnet());
+                    // changeBody(DashboardComponent());
                   },
                   trailing: Icon(
                     Icons.chevron_right,

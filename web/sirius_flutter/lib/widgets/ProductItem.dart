@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/assets/assets.dart';
 
-class ListItemItem extends StatelessWidget {
-  const ListItemItem({
+class ProductItem extends StatelessWidget {
+  const ProductItem({
     Key key,
   }) : super(key: key);
 
