@@ -11,8 +11,6 @@ public class ProductDTO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String barcode_num;
-
     private String barcode_url;
 
     private Integer category_id;
@@ -35,14 +33,6 @@ public class ProductDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getBarcode_num() {
-        return barcode_num;
-    }
-
-    public void setBarcode_num(String barcode_num) {
-        this.barcode_num = barcode_num;
     }
 
     public String getBarcode_url() {

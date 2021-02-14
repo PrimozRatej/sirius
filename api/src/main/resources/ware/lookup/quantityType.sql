@@ -1,0 +1,1 @@
+SELECT DISTINCT(inv.quantityType) FROM sirius.inventory_item inv;

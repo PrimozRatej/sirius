@@ -3,7 +3,7 @@ import 'package:sirius_flutter/widgets/Menu.dart';
 
 void main() {
   runApp(MaterialApp(
-    title: 'SIrisu',
+    title: 'Sirius',
     theme: ThemeData(
       primarySwatch: Colors.blue,
       visualDensity: VisualDensity.adaptivePlatformDensity,

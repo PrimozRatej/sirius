@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/assets/assets.dart';
 import 'package:sirius_flutter/views/Customers.dart';
-import 'package:sirius_flutter/views/Dashboard.dart';
+import 'package:sirius_flutter/views/ware/Dashboard.dart';
 import 'package:sirius_flutter/views/Notifications.dart';
-import 'package:sirius_flutter/views/Packages.dart';
-import 'package:sirius_flutter/views/Products.dart';
+import 'package:sirius_flutter/views/UserFilterDemo.dart';
+import 'package:sirius_flutter/views/ware/prod/ProdListController.dart';
 
 class Menu extends StatefulWidget {
   createState() => _MenuState();
@@ -110,7 +110,9 @@ class _MenuState extends State<Menu> {
                 leading: Icon(Icons.shopping_basket),
                 title: Text('Items'),
                 onTap: () {
-                  changeBody(ProductsComponent());
+                  changeBody(
+                    ProdListUserFilter(),
+                  );
                 },
               ),
               children: <Widget>[
@@ -119,7 +121,7 @@ class _MenuState extends State<Menu> {
                       Icon(Icons.arrow_right_alt, color: Colors.transparent),
                   title: Text('Item Groups'),
                   onTap: () {
-                    // changeBody(ItemsComponent());
+                    //changeBody();
                   },
                 ),
                 ListTile(
@@ -151,7 +153,16 @@ class _MenuState extends State<Menu> {
               leading: Icon(Icons.folder),
               title: Text('Packages'),
               onTap: () {
-                changeBody(PackagesComponent());
+                changeBody(UserFilterDemo());
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.folder),
+              title: Text('Number filter'),
+              onTap: () {
+                int from = 1;
+                int to = 1;
+                //changeBody(NumberFilter("SKU", 0.33));
               },
             ),
           ],

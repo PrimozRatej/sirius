@@ -17,6 +17,8 @@ public class InventoryItemDTO {
     private Integer product_id;
 
     private Integer  quantity;
+
+    private String  quantityType;
     
     private Integer warehouse_id;
 
@@ -43,6 +45,10 @@ public class InventoryItemDTO {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public String getQuantityType() {return quantityType;}
+
+    public void setQuantityType(String quantityType) {this.quantityType = quantityType;}
 
     public Integer getWarehouse_id() {
         return warehouse_id;

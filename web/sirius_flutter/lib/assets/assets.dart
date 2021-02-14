@@ -1,4 +1,5 @@
 class Assets {
+  static String domain = "http://localhost:8080";
   static String siriusNavBarLogoBlack = 'https://i.imgur.com/SYEtbNW.png';
   static String item1 = 'https://i.imgur.com/kp1bMJV.jpg';
   static String siriusNavBarLogoWhite = 'https://i.imgur.com/4bQMapI.png';

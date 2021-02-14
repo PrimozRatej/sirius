@@ -124,7 +124,6 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
                       onPressed: () => {},
                       padding: EdgeInsets.all(10.0),
                       child: Row(
-                        // Replace with a Row for horizontal icon + text
                         children: <Widget>[
                           Icon(Icons.person, color: Colors.white),
                           Text("Customers",
@@ -145,7 +144,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage>
                         // Replace with a Row for horizontal icon + text
                         children: <Widget>[
                           Icon(Icons.folder, color: Colors.white),
-                          Text("Packages",
+                          Text("Number Filter",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16))
                         ],

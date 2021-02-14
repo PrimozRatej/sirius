@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sirius_flutter/assets/assets.dart';
 
-class ProductItem extends StatelessWidget {
-  const ProductItem({
-    Key key,
-  }) : super(key: key);
+import 'ProdDTO.dart';
+
+// ignore: must_be_immutable
+class ProdTileController extends StatelessWidget {
+  ProdDTO product;
+
+  ProdTileController(ProdDTO dto) {
+    this.product = dto;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +29,15 @@ class ProductItem extends StatelessWidget {
                   Column(
                     children: [
                       Container(
-                        //decoration: BoxDecoration(color: Colors.blue),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Image.network(
-                                Assets.item1,
+                                product.imgurImgPath,
                                 width: 80,
-                                height: 60,
+                                height: 80,
                               ),
                             ),
                           ),
@@ -51,7 +54,7 @@ class ProductItem extends StatelessWidget {
                           children: [
                             Container(
                               child: new Center(
-                                child: new Text("Nike Air 7"),
+                                child: new Text(product.name),
                               ),
                             )
                           ],
@@ -63,7 +66,8 @@ class ProductItem extends StatelessWidget {
                           children: [
                             Container(
                               child: new Center(
-                                child: new Text("SKU: 4099200097640"),
+                                child:
+                                    new Text("SKU: " + product.id.toString()),
                               ),
                             )
                           ],
@@ -95,7 +99,7 @@ class ProductItem extends StatelessWidget {
                                 ),
                                 child: Container(
                                     padding: const EdgeInsets.all(4),
-                                    child: Text("10,00")),
+                                    child: Text(product.quantity.toString())),
                               ),
                             ),
                           )
@@ -108,7 +112,7 @@ class ProductItem extends StatelessWidget {
                         children: [
                           Container(
                             child: new Center(
-                              child: new Text("kom"),
+                              child: new Text(product.quaType),
                             ),
                           )
                         ],
@@ -120,7 +124,6 @@ class ProductItem extends StatelessWidget {
             ],
           ),
         ),
-        Divider(color: Colors.black),
       ],
     );
   }
