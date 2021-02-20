@@ -221,8 +221,6 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
           ignoring: !widget.enabled,
           child: GestureDetector(
             onTap: () {
-              print(data);
-              print("you moma");
               _selectSearchMode(data);
             },
             child: _formField(data),
@@ -251,7 +249,6 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
   }
 
   setValue(data) {
-    print("data");
     setState(() {
       textName = _selectedItemAsString(data);
     });

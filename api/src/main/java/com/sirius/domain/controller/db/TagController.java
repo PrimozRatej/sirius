@@ -1,7 +1,7 @@
 package com.sirius.domain.controller.db;
 
 import com.sirius.domain.model.db.TagDTO;
-import com.sirius.domain.repository.TagRepository;
+import com.sirius.domain.repository.db.TagRepository;
 import com.sirius.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

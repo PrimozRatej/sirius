@@ -1,0 +1,1 @@
+SELECT * FROM sirius.app_filter;

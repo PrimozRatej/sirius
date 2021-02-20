@@ -26,3 +26,35 @@ $ flutter devices  //downloads sky_engine and sdk tools then shows a list of dev
 $ flutter create test_app
 $ flutter run -d chrome  //local host will run chrome
 $ flutter run -d chrome --web-port=42457 // always run on same port
+
+## Create User
+# issues a GET request to retrieve tasks with no JWT
+# HTTP 403 Forbidden status is expected
+curl http://localhost:8080/api/domain/address
+
+# registers a new user
+curl -H "Content-Type: application/json" -X POST -d '{
+    "username": "admin123",
+    "password": "password",
+    "email": "admin123@email.com"
+}' http://localhost:8080/api/domain/sign-up
+
+# logs into the application (JWT is generated)
+curl -i -H "Content-Type: application/json" -X POST -d '{
+    "username": "admin123",
+    "password": "password",
+    "email": "admin123@email.com"
+}' http://localhost:8080/login
+
+# issue a POST request, passing the JWT, to create a task
+# remember to replace xxx.yyy.zzz with the JWT retrieved above
+curl -H "Content-Type: application/json" \
+-H "Authorization: Bearer xxx.yyy.zzz" \
+-X POST -d '{
+    "description": "Buy watermelon"
+}'  http://localhost:8080/tasks
+
+# issue a new GET request, passing the JWT
+# remember to replace xxx.yyy.zzz with the JWT retrieved above
+curl -H "Authorization: {tokken}
+

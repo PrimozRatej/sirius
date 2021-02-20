@@ -1,9 +1,13 @@
 package com.sirius.domain.model.db;
 
+import com.sirius.domain.controller.db.UserRolesController;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -17,7 +21,7 @@ public class UserDTO {
     private String username;
 
     @NotBlank
-    private String passwordHash;
+    private String password;
 
     private String firstName;
 
@@ -32,6 +36,8 @@ public class UserDTO {
     private Date registered;
 
     private Date lastLogin;
+
+    private Boolean isOnline;
 
     public Integer getId() {
         return id;
@@ -50,11 +56,11 @@ public class UserDTO {
     }
 
     public String getPasswordHash() {
-        return passwordHash;
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPasswordHash(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -112,4 +118,11 @@ public class UserDTO {
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }
+
+    public Boolean getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(Boolean isOnline) { this.isOnline = isOnline; }
+
 }

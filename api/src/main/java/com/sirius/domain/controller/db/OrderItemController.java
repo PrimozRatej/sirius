@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import com.sirius.domain.model.db.OrderItemDTO;
-import com.sirius.domain.repository.OrderItemRepository;
+import com.sirius.domain.repository.db.OrderItemRepository;
 import com.sirius.exception.ResourceNotFoundException;
 import java.util.List;
 

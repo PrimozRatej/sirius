@@ -1,7 +1,6 @@
 package com.sirius.domain.controller.ware.lookup;
 
 import com.sirius.domain.controller.helpers.StringHelper;
-import com.sirius.domain.model.ware.ProductItemDTO;
 import com.sirius.domain.model.ware.lookup.QuantityTypeLookupModelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

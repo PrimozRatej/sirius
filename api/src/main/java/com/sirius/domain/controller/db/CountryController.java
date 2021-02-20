@@ -1,7 +1,7 @@
 package com.sirius.domain.controller.db;
 
 import com.sirius.domain.model.db.CountryDTO;
-import com.sirius.domain.repository.CountryRepository;
+import com.sirius.domain.repository.db.CountryRepository;
 import com.sirius.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

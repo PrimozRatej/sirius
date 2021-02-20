@@ -1,7 +1,7 @@
 package com.sirius.domain.controller.db;
 
 import com.sirius.domain.model.db.OrderDTO;
-import com.sirius.domain.repository.OrderRepository;
+import com.sirius.domain.repository.db.OrderRepository;
 import com.sirius.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

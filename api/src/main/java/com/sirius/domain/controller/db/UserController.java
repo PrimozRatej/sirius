@@ -1,14 +1,18 @@
 package com.sirius.domain.controller.db;
 
+import com.sirius.domain.conf.auth.AuthUser;
 import com.sirius.domain.model.db.UserDTO;
-import com.sirius.domain.repository.UserRepository;
+import com.sirius.domain.repository.db.UserRepository;
 import com.sirius.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -17,6 +21,7 @@ public class UserController {
 
     @Autowired
     UserRepository repository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // Get All Users
     @GetMapping("/user")
@@ -61,4 +66,27 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
+
+    // Aplication user
+
+    public UserController(UserRepository userRepository,
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.repository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @PostMapping("/user/sign_up")
+    public void signUp(@RequestBody AuthUser user) {
+        UserDTO userR = new UserDTO();
+        userR.setUsername(user.getUsername());
+        userR.setPasswordHash(bCryptPasswordEncoder.encode(user.getPassword()));
+        userR.setEmail(user.getEmail());
+        userR.setIsOnline(false);
+        userR.setIpAddress("10.0.0.12");
+        userR.setRegistered(new Date(System.currentTimeMillis()));
+        repository.save(userR);
+    }
+
+
+
 }

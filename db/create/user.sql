@@ -1,9 +1,8 @@
 SELECT SYSDATE() as timestamp, 'start user.sql' as decsription;
 create table user (
-	id INT PRIMARY KEY,
+	id INT PRIMARY KEY AUTO_INCREMENT,
 	username VARCHAR(50) NOT NULL,
-	password_hash VARCHAR(64) NOT NULL,
-	password_salt VARCHAR(32) NOT NULL,
+	password VARCHAR(64) NOT NULL,
 	first_Name VARCHAR(50),
 	last_Name VARCHAR(50),
 	email VARCHAR(50) NOT NULL,
@@ -11,7 +10,8 @@ create table user (
 	ip_address VARCHAR(20) NOT NULL,
 	registered DATETIME NOT NULL,
 	last_login DATETIME,
-	isOnline BOOLEAN NOT NULL,
+	is_online BOOLEAN NOT NULL,
+
 	CONSTRAINT user_email_unique_params_constraint UNIQUE (email),
 	CONSTRAINT user_username_unique_params_constraint UNIQUE (username)
 );

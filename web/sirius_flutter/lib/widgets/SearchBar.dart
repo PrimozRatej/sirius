@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sirius_flutter/helpers/Debouncer.dart';
 import 'package:sirius_flutter/ixFrame/IxList/IxListFilterDTO.dart';
 import 'package:sirius_flutter/ixFrame/IxList/IxListItemDTO.dart';
 import 'package:sirius_flutter/ixFrame/IxList/IxListService.dart';
-import 'package:sirius_flutter/views/ware/helpers/Debouncer.dart';
 
 class SearchBar extends StatefulWidget {
   IxListFilterDTO filterDTO;

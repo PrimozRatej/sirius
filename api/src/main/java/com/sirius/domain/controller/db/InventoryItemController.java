@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import com.sirius.domain.model.db.InventoryItemDTO;
-import com.sirius.domain.repository.InventoryItemRepository;
+import com.sirius.domain.repository.db.InventoryItemRepository;
 import com.sirius.exception.ResourceNotFoundException;
 import java.util.List;
 

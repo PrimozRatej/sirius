@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sirius_flutter/widgets/Menu.dart';
+import 'package:sirius_flutter/views/login/LoginController.dart';
+import 'package:sirius_flutter/views/main/Main.dart';
+
+import 'helpers/AppData.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -8,6 +11,7 @@ void main() {
       primarySwatch: Colors.blue,
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
-    home: Menu(),
+    home: AppData.tokenJWT != null ? Main() : LoginController(),
+    //home: Main(),
   ));
 }
