@@ -14,6 +14,9 @@ class IxNumberFilter extends StatefulWidget {
   IxNumberFilter(String name, num vSize) {
     this.name = name;
     vericalSize = vSize;
+    valueController = new TextEditingController();
+    valueFromController = new TextEditingController();
+    valueToController = new TextEditingController();
   }
 
   void clearFilter() {
@@ -37,9 +40,7 @@ class IxNumberFilterState extends State<IxNumberFilter> {
 
   @override
   void initState() {
-    widget.valueController = new TextEditingController();
-    widget.valueFromController = new TextEditingController();
-    widget.valueToController = new TextEditingController();
+
   }
 
   final formKey = GlobalKey<FormState>();
@@ -55,7 +56,7 @@ class IxNumberFilterState extends State<IxNumberFilter> {
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         width: MediaQuery.of(context).size.width * widget.vericalSize,
-        height: MediaQuery.of(context).size.width * 0.15,
+        // height: MediaQuery.of(context).size.width * 0.15,
         child: Column(
           children: [
             Row(
@@ -93,7 +94,7 @@ class IxNumberFilterState extends State<IxNumberFilter> {
                           controller: widget.valueFromController,
                           decoration: InputDecoration(
                             isDense: true,
-                            contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                             labelText: 'From',
                             border: OutlineInputBorder(),
                           ),
@@ -115,7 +116,7 @@ class IxNumberFilterState extends State<IxNumberFilter> {
                           controller: widget.valueToController,
                           decoration: InputDecoration(
                             isDense: true,
-                            contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                             labelText: 'To',
                             border: OutlineInputBorder(),
                           ),
@@ -138,7 +139,7 @@ class IxNumberFilterState extends State<IxNumberFilter> {
                           controller: widget.valueController,
                           decoration: InputDecoration(
                             isDense: true,
-                            contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                             labelText: 'Value',
                             border: OutlineInputBorder(),
                           ),

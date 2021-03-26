@@ -44,7 +44,6 @@ class QuantityTypeLookupFilterState extends State<QuantityTypeLookupFilter> {
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         width: MediaQuery.of(context).size.width * widget.vericalSize,
-        height: MediaQuery.of(context).size.width * 0.15,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -62,7 +61,6 @@ class QuantityTypeLookupFilterState extends State<QuantityTypeLookupFilter> {
                       child: widget.lookupDropDown =
                           DropdownSearch<QuantityTypeLookupModelDTO>(
                         mode: Mode.BOTTOM_SHEET,
-                        // selectedItem: widget.selectedValue,
                         dropdownBuilderSupportsNullItem: true,
                         itemAsString: (QuantityTypeLookupModelDTO u) =>
                             u.quantityTypeAsString(),

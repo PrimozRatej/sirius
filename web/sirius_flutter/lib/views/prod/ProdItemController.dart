@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'ProdDTO.dart';
+import 'ProdListDTO.dart';
 
 // ignore: must_be_immutable
-class ProdTileController extends StatelessWidget {
-  ProdDTO product;
+class ProdItemController extends StatelessWidget {
+  ProductItemDTO product;
 
-  ProdTileController(ProdDTO dto) {
+  ProdItemController(ProductItemDTO dto) {
     this.product = dto;
   }
 
