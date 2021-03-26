@@ -1,64 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:sirius_flutter/ixFrame/IxFilter/IxNumberFilter.dart';
-import 'package:sirius_flutter/views/lookup/QuantityType/QuantityTypeLookupFilter.dart';
-import 'package:sirius_flutter/widgets/SearchBar.dart';
-import 'ProdDTO.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sirius_flutter/helpers/Debouncer.dart';
+import 'package:sirius_flutter/helpers/UrlBuilder.dart';
+import 'package:sirius_flutter/views/lookup/QuantityType/QuantityTypeLookupModelDTO.dart';
+import 'package:sirius_flutter/views/prod/filter/ProdFilterDTO.dart';
+import 'package:sirius_flutter/views/prod/filter/saved/ListSavedFilterService.dart';
+import 'ProdListDTO.dart';
 import 'ProdListFilterDTO.dart';
-import 'ProdServices.dart';
-import 'ProdTileController.dart';
+import 'ProdListServices.dart';
+import 'ProdItemController.dart';
 import 'filter/ProdFilterController.dart';
 
-class ProdListUserFilter extends StatefulWidget {
-  ProdListUserFilter() : super();
-
+class ProdListController extends StatefulWidget {
+  ProdListController() : super();
+  String objName = "prod";
+  ProdListState state;
   @override
-  ProdFilterState createState() => ProdFilterState();
+  ProdListState createState() => state = ProdListState();
 }
 
-class ProdFilterState extends State<ProdListUserFilter> {
+class ProdListState extends State<ProdListController> {
   // Time to animate dropdown menu.
   int debouncerMilTime = 500;
   // List of objects
-  List<ProdDTO> filteredUsers;
-  ProdServices service;
-  ProdListFilterDTO prodListFilterDTO;
-  // Controlling drop down menus
-  bool filterOpened = false;
-  double filterHeight = 0;
-  bool barReaderOpened = false;
-  double barReaderHeight = 0;
-  RaisedButton clearFilterBtn;
-  bool filterRemoved = true;
+  ProdListDTO listDTO;
+  ProdListFilterDTO filterDTO;
+  ProdListServices service;
 
-  // Dropdown animation
-  bool isBarReaderVisible = false;
-  bool isFilterVisible = false;
+  TextEditingController searchBarTextController;
+  final debouncer = Debouncer(milliseconds: 500);
 
-  // Filters
-  IxNumberFilter skuFilter;
-  IxNumberFilter quantityFilter;
-  QuantityTypeLookupFilter quantityTypeLookupFilter;
-  // Text controllers
-  TextEditingController safeFilterController;
-  SearchBar searchBar;
+  // Controllers
+  ProdFilterController filterController;
 
   @override
   void initState() {
-    service = new ProdServices();
-    prodListFilterDTO = new ProdListFilterDTO();
-    safeFilterController = new TextEditingController();
-    safeFilterController = new TextEditingController();
-    // Filters init
-    skuFilter = new IxNumberFilter("SKU", 0.32);
-    quantityFilter = new IxNumberFilter("Quantity", 0.32);
-    quantityTypeLookupFilter =
-        new QuantityTypeLookupFilter("Quantity Type", 0.32);
+    service = new ProdListServices(context);
+    filterDTO = new ProdListFilterDTO();
+    searchBarTextController = new TextEditingController();
 
     super.initState();
-    service.getListData(prodListFilterDTO).then((usersFromServer) {
+
+    filterController = new ProdFilterController(widget.state);
+
+    service.getData(filterDTO).then((usersFromServer) {
       setState(() {
-        filteredUsers = usersFromServer;
+        listDTO = usersFromServer;
       });
     });
   }
@@ -73,278 +60,222 @@ class ProdFilterState extends State<ProdListUserFilter> {
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Row(
                 children: [
-                  searchBar =
-                      SearchBar(prodListFilterDTO, service, filteredUsers),
-                  Container(
-                    child: IconButton(
-                        iconSize: 30,
-                        color: Colors.black,
-                        hoverColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        icon: Icon(
-                          Icons.qr_code,
+                  Expanded(
+                    child: FutureBuilder(builder: (context, snapshot) {
+                      return TextField(
+                        controller: searchBarTextController,
+                        onChanged: (searchString) {
+                          searchString == ""
+                              ? searchString = null
+                              : searchString;
+                          debouncer.run(() {
+                            setState(() {
+                              filterDTO.search = searchString;
+                              service
+                                  .getData(filterDTO)
+                                  .then((usersFromServer) {
+                                setState(() {
+                                  filterDTO.search = searchString;
+                                  listDTO = usersFromServer;
+                                });
+                              });
+                            });
+                          });
+                        },
+                        textAlignVertical: TextAlignVertical.bottom,
+                        decoration: new InputDecoration(
+                          suffixIcon: Container(
+                            height: 10,
+                            width: 10,
+                            child: service.isLoading
+                                ? SpinKitCircle(
+                                    color: Colors.grey,
+                                    size: 25.0,
+                                  )
+                                : Icon(
+                                    Icons.done_all,
+                                    color: Colors.green,
+                                  ),
+                          ),
+                          filled: true,
+                          fillColor: Color(0xbddff5f5),
+                          prefixIcon: Icon(Icons.search),
+                          hintText: "Search",
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25.0)),
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25.0)),
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            barReaderOnTab();
-                          });
-                        }),
-                  ),
-                  Container(
-                    child: IconButton(
-                        iconSize: 30,
-                        color: Colors.black,
-                        hoverColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        icon: filterOpened
-                            ? Icon(
-                                Icons.arrow_drop_down,
-                              )
-                            : Icon(Icons.arrow_right),
-                        onPressed: () {
-                          setState(() {
-                            filterOnTab();
-                          });
-                        }),
+                      );
+                    }),
                   ),
                 ],
               ),
             ),
           ),
-          AnimatedContainer(
-            height: barReaderHeight,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.red,
-            duration: Duration(milliseconds: 250),
-            child: isBarReaderVisible
-                ? Container(
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      children: [
-                        Container(
-                          color: Colors.black,
-                          child: Text("Text1"),
-                        ),
-                        Container(
-                          color: Colors.green,
-                          child: Text("Text1"),
-                        ),
-                        Container(
-                          color: Colors.blue,
-                          child: Text("Text1"),
-                        ),
-                        Container(
-                          color: Colors.white,
-                          child: Text("Text1"),
-                        ),
-                        Container(
-                          color: Colors.black,
-                          child: Text("Text1"),
-                        ),
-                      ],
+          (filterDTO != null ||
+                  UrlBuilder.buildUrlForListObj(filterDTO.toJson()) == "")
+              ? Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: getFilterWidget(filterDTO.toJson()),
                     ),
-                  )
-                : Container(),
-          ),
-          AnimatedContainer(
-            //height: barReaderHeight,
-            width: MediaQuery.of(context).size.width,
-            duration: Duration(milliseconds: 250),
-            child: isFilterVisible
-                ? Container(
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      children: [
-                        Container(
-                          height: 40,
-                          // color: Colors.blue,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Wrap(
-                                direction: Axis.horizontal,
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 5.0, vertical: 2.5),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5.0, vertical: 2.5),
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    child: TextFormField(
-                                      controller: safeFilterController,
-                                      decoration: InputDecoration(
-                                        isDense: true,
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(20, 20, 20, 0),
-                                        labelText: 'Filter name',
-                                        border: OutlineInputBorder(),
-                                      ),
-                                      onChanged: (text) {
-                                        setState(() {
-                                          // widget.exactValue = int.parse(text);
-                                        });
-                                      },
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 2.5, vertical: 5.0),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.5, vertical: 1.5),
-                                      child: RaisedButton(
-                                          color: Colors.blue,
-                                          textColor: Colors.black,
-                                          child: Text("Save filter"),
-                                          onPressed: () {})),
-                                  Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 2.5, vertical: 5.0),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 2.5, vertical: 1.5),
-                                      child: clearFilterBtn = RaisedButton(
-                                          color: Colors.blue,
-                                          textColor: Colors.black,
-                                          child: Text("Clear filter"),
-                                          onPressed: () {
-                                            setState(() {
-                                              clearFilter();
-                                            });
-                                          })),
-                                ],
-                              ),
-                              Container(
-                                child: RaisedButton(
-                                  padding: EdgeInsets.all(0.0),
-                                  elevation: 10.0,
-                                  color: Colors.green.shade300,
-                                  highlightElevation: 0.0,
-                                  onPressed: () {
-                                    onFilterCall();
-                                  },
-                                  splashColor: Colors.green,
-                                  highlightColor: Colors.green,
-                                  shape: CircleBorder(),
-                                  child: Icon(
-                                    Icons.refresh,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        skuFilter,
-                        quantityFilter,
-                        quantityTypeLookupFilter
-                      ],
-                    ),
-                  )
-                : Container(),
+                  ),
+                )
+              : Scaffold(),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text("SKU"), Text("Name"), Text("quantity")],
+            ),
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.all(10.0),
-              itemCount: filteredUsers != null ? filteredUsers.length : 0,
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+              itemCount: listDTO != null ? listDTO.filteredList.length : 0,
               itemBuilder: (BuildContext context, int index) {
-                return ProdTileController(filteredUsers[index]);
+                return ProdItemController(listDTO.filteredList[index]);
               },
             ),
           ),
           Container(
-            padding: EdgeInsets.all(5.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext bc) {
-                      return ProdFilterController();
-                    });
-              },
-              child: Icon(Icons.filter),
-            ),
+            child: listDTO?.filteredList != null ?? null != null
+                ? Container(
+                    padding: EdgeInsets.symmetric(vertical: 3),
+                    width: double.infinity,
+                    color: Colors.black26,
+                    child: Center(
+                      child: RichText(
+                        text: TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: new TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.black87,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: listDTO.filteredList.length.toString(),
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: ' out of '),
+                            TextSpan(
+                                text: listDTO.countAlInDB.toString(),
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
           ),
         ],
+      ),
+      floatingActionButton: Container(
+        padding: EdgeInsets.all(15.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext bc) {
+                  return Container(
+                      height:
+                          MediaQuery.of(context).copyWith().size.height * 0.75,
+                      child: filterController);
+                });
+          },
+          child: Icon(Icons.filter_alt),
+        ),
       ),
     );
   }
 
-  void onFilterCall() {
+  setData(ProdListFilterDTO prodListFilterDTO) {
+    prodListFilterDTO.search = this.filterDTO.search;
     setState(() {
-      // SKU
-      prodListFilterDTO.skuExact = skuFilter.exactValue;
-      prodListFilterDTO.skuFrom = skuFilter.fromValue;
-      prodListFilterDTO.skuTo = skuFilter.toValue;
-
-      // Quantity
-      prodListFilterDTO.quantityExact = quantityFilter.exactValue;
-      prodListFilterDTO.quantityFrom = quantityFilter.fromValue;
-      prodListFilterDTO.quantityTo = quantityFilter.toValue;
-
-      //QuantityType
-      quantityTypeLookupFilter.selectedValue == null
-          ? prodListFilterDTO.quantityType = null
-          : prodListFilterDTO.quantityType =
-              quantityTypeLookupFilter.selectedValue.quantityType;
-
-      service.getListData(prodListFilterDTO).then((usersFromServer) {
+      this.filterDTO = prodListFilterDTO;
+      service.getData(prodListFilterDTO).then((usersFromServer) {
         setState(() {
-          filteredUsers = usersFromServer;
+          listDTO = usersFromServer;
         });
       });
     });
   }
 
-  void clearFilter() {
+  setDataFromSavedFilter(Map<String, dynamic> filter) {
+    ProdListFilterDTO prodListFilterDTO = new ProdListFilterDTO();
+    prodListFilterDTO.search = filter["search"];
+    prodListFilterDTO.skuExact =
+        filter["skuExact"] != null ? int.parse(filter["skuExact"]) : null;
+    prodListFilterDTO.skuFrom =
+        filter["skuFrom"] != null ? int.parse(filter["skuFrom"]) : null;
+    prodListFilterDTO.skuTo =
+        filter["skuTo"] != null ? int.parse(filter["skuTo"]) : null;
+    prodListFilterDTO.quantityExact = filter["quantityExact"] != null
+        ? int.parse(filter["quantityExact"])
+        : null;
+    prodListFilterDTO.quantityFrom = filter["quantityFrom"] != null
+        ? int.parse(filter["quantityFrom"])
+        : null;
+    prodListFilterDTO.quantityTo =
+        filter["quantityTo"] != null ? int.parse(filter["quantityTo"]) : null;
+    // Lookups TODO: get object from DB for lookups
+    prodListFilterDTO.quantityType = new QuantityTypeLookupModelDTO();
+    prodListFilterDTO.quantityType.quantityType = filter["quantityType"];
+
     setState(() {
-      //Search
-      clearSearchFilterBar();
-      // SKU
-      skuFilter.clearFilter();
-      // Quantity
-      quantityFilter.clearFilter();
-      //QuantityType
-      quantityTypeLookupFilter.clearFilter();
+      this.filterDTO = prodListFilterDTO;
+      service.getData(prodListFilterDTO).then((usersFromServer) {
+        setState(() {
+          listDTO = usersFromServer;
+        });
+      });
     });
   }
 
-  void clearSearchFilterBar() {
-    prodListFilterDTO.search = null;
+  clearFilter() {
+    this.filterDTO.search = "";
+    this.searchBarTextController.clear();
+    setState(() {
+      this.filterDTO = new ProdListFilterDTO();
+      service.getData(this.filterDTO).then((usersFromServer) {
+        setState(() {
+          listDTO = usersFromServer;
+        });
+      });
+    });
   }
 
-  barReaderOnTab() {
-    if (barReaderOpened) {
-      barReaderOpened = false;
-      barReaderHeight = 0;
-      isBarReaderVisible = false;
-    } else {
-      barReaderOpened = true;
-      barReaderHeight = 100;
-      isBarReaderVisible = true;
-      filterOpened = false;
-      filterHeight = 0;
-      isFilterVisible = false;
+  List<Widget> getFilterWidget(Map<String, dynamic> json) {
+    List<Widget> list = new List<Widget>();
+    String urlFilterStr = "";
+    for (var val in json.entries) {
+      if (val.value != null) {
+        urlFilterStr = val.key.toString() + "=" + val.value.toString();
+        list.add(Container(
+          height: 22,
+          margin: EdgeInsets.all(3),
+          color: Colors.transparent,
+          child: new Container(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              decoration: new BoxDecoration(
+                  color: Colors.lightBlueAccent,
+                  borderRadius: new BorderRadius.all(Radius.circular(30.0))),
+              child: new Center(
+                child: new Text(urlFilterStr),
+              )),
+        ));
+      }
     }
-  }
-
-  filterOnTab() {
-    if (filterOpened) {
-      filterOpened = false;
-      filterHeight = 0;
-      isFilterVisible = false;
-    } else {
-      barReaderOpened = false;
-      barReaderHeight = 0;
-      isBarReaderVisible = false;
-      filterOpened = true;
-      filterHeight = 100;
-      isFilterVisible = true;
-    }
+    return list;
   }
 }

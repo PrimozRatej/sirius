@@ -11,6 +11,9 @@ create table user (
 	registered DATETIME NOT NULL,
 	last_login DATETIME,
 	is_online BOOLEAN NOT NULL,
+	picture VARCHAR(250),
+	user_type VARCHAR(50),
+	verified BOOLEAN,
 
 	CONSTRAINT user_email_unique_params_constraint UNIQUE (email),
 	CONSTRAINT user_username_unique_params_constraint UNIQUE (username)

@@ -41,10 +41,15 @@ class __MenuItemState extends State<_MenuItem> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          if (widget.menuItem.onTap != null) widget.menuItem.onTap();
-          //TODO: figure out what to do with dismissing after tap.  Maybe just leave as is?
-          //widget.dismiss();
+        onTap: () async {
+          var result = true; // Close always if not defined differently
+          if (widget.menuItem.onTap != null) {
+            result = await widget.menuItem.onTap() == null ? true : false;
+          }
+
+          if (result) {
+            widget.dismiss();
+          }
         },
         onLongPress: () {
           if (widget.menuItem.onLongPress != null) {

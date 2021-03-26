@@ -1,4 +1,6 @@
 package com.sirius.domain.model.db;
+import net.bytebuddy.implementation.bind.annotation.Default;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.sql.Date;
@@ -9,10 +11,10 @@ import java.sql.Date;
 public class AppFilterDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String app;
+    private Integer app_object_id;
 
     private String name;
 
@@ -32,12 +34,12 @@ public class AppFilterDTO {
         this.id = id;
     }
 
-    public String getApp() {
-        return app;
+    public Integer getApp_object_id() {
+        return app_object_id;
     }
 
-    public void setApp(String app) {
-        this.app = app;
+    public void setApp_object_id(Integer app_object_id) {
+        this.app_object_id = app_object_id;
     }
 
     public String getName() {

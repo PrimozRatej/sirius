@@ -1,196 +1,233 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:sirius_flutter/helpers/Debouncer.dart';
+import 'package:sirius_flutter/helpers/Formater.dart';
 import 'package:sirius_flutter/helpers/UrlBuilder.dart';
+import 'package:sirius_flutter/widgets/flutter_anywhere_menus/enums.dart';
+import 'package:sirius_flutter/widgets/flutter_anywhere_menus/menu.dart';
 
+import '../../ProdListController.dart';
+import 'ListSavedFilterDTO.dart';
+import 'ListSavedFilterService.dart';
+
+// ignore: must_be_immutable
 class ProdListSavedFilterController extends StatefulWidget {
+  ProdListState parent;
   ProdListSavedFilterState state;
+
+  ProdListSavedFilterController(parent) {
+    this.parent = parent;
+  }
+
   @override
   ProdListSavedFilterState createState() => state = ProdListSavedFilterState();
 }
 
 class ProdListSavedFilterState extends State<ProdListSavedFilterController> {
   // Time to animate dropdown menu.
-  int debouncerMilTime = 500;
-
-  TextEditingController searchBarTextController;
-  final debouncer = Debouncer(milliseconds: 500);
+  ProdSavedFilterServices service;
+  ProdListSavedFilterDTO listPrivateDTO;
+  ProdListSavedFilterDTO listPublicDTO;
 
   @override
   void initState() {
-    service = new ProdListServices(context);
-    filterDTO = new ProdListFilterDTO();
-    searchBarTextController = new TextEditingController();
-
     super.initState();
-
-    filterController = new ProdFilterController(widget.state);
-
-    service.getData(filterDTO).then((usersFromServer) {
-      setState(() {
-        listDTO = usersFromServer;
-      });
-    });
+    service = new ProdSavedFilterServices(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
-          Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: FutureBuilder(builder: (context, snapshot) {
-                      return TextField(
-                        controller: searchBarTextController,
-                        onChanged: (searchString) {
-                          searchString == ""
-                              ? searchString = null
-                              : searchString;
-                          debouncer.run(() {
-                            setState(() {
-                              filterDTO.search = searchString;
-                              service
-                                  .getData(filterDTO)
-                                  .then((usersFromServer) {
-                                setState(() {
-                                  filterDTO.search = searchString;
-                                  listDTO = usersFromServer;
-                                });
-                              });
-                            });
-                          });
-                        },
-                        textAlignVertical: TextAlignVertical.bottom,
-                        decoration: new InputDecoration(
-                          suffixIcon: Container(
-                            height: 10,
-                            width: 10,
-                            child: service.isLoading
-                                ? SpinKitCircle(
-                              color: Colors.grey,
-                              size: 25.0,
-                            )
-                                : Icon(
-                              Icons.done_all,
-                              color: Colors.green,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: Color(0xbddff5f5),
-                          prefixIcon: Icon(Icons.search),
-                          hintText: "Search",
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(25.0)),
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(25.0)),
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          (filterDTO != null ||
-              UrlBuilder.buildUrlForListObj(filterDTO.toJson()) == "")
-              ? Container(
-              child:
-              Text(UrlBuilder.buildUrlForListObj(filterDTO.toJson())))
-              : Scaffold(),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-              itemCount: listDTO != null ? listDTO.filteredList.length : 0,
-              itemBuilder: (BuildContext context, int index) {
-                return ProdItemController(listDTO.filteredList[index]);
-              },
-            ),
-          ),
           Container(
-            child: listDTO?.filteredList != null ?? null != null
-                ? Container(
-              padding: EdgeInsets.symmetric(vertical: 3),
-              width: double.infinity,
-              color: Colors.black26,
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    // Note: Styles for TextSpans must be explicitly defined.
-                    // Child text spans will inherit styles from parent
-                    style: new TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black87,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: listDTO.filteredList.length.toString(),
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: ' out of '),
-                      TextSpan(
-                          text: listDTO.countAlInDB.toString(),
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ),
-              ),
-            )
-                : Container(),
+            color: Colors.black,
+            padding: EdgeInsets.all(5),
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              "Private filters",
+              style: TextStyle(fontSize: 16, color: Colors.red),
+            ),
           ),
+          FutureBuilder(
+              future: service.getData(false, widget.parent.widget.objName),
+              builder: (context, snapshotU) {
+                if (snapshotU.hasData) {
+                  listPrivateDTO = snapshotU.data;
+                  return showList(listPrivateDTO);
+                }
+                return Expanded(child: Center(child: CircularProgressIndicator()));
+              }),
+          Container(
+            color: Colors.black,
+            padding: EdgeInsets.all(5),
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              "Public filters",
+              style: TextStyle(fontSize: 16, color: Colors.green),
+            ),
+          ),
+          FutureBuilder(
+              future: service.getData(true, widget.parent.widget.objName),
+              builder: (context, snapshotU) {
+                if (snapshotU.hasData) {
+                  listPublicDTO = snapshotU.data;
+                  return showList(listPublicDTO);
+                }
+                return Expanded(child: Center(child: CircularProgressIndicator()));
+              }),
         ],
-      ),
-      floatingActionButton: Container(
-        padding: EdgeInsets.all(15.0),
-        child: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext bc) {
-                  return Container(
-                      height:
-                      MediaQuery.of(context).copyWith().size.height * 0.75,
-                      child: filterController);
-                });
-          },
-          child: Icon(Icons.filter_alt),
-        ),
       ),
     );
   }
 
-  setData(ProdListFilterDTO prodListFilterDTO) {
-    prodListFilterDTO.search = this.filterDTO.search;
-    setState(() {
-      this.filterDTO = prodListFilterDTO;
-      service.getData(prodListFilterDTO).then((usersFromServer) {
-        setState(() {
-          listDTO = usersFromServer;
-        });
-      });
-    });
+  List<Widget> getFilterWidget(String filterString) {
+    List<Widget> list = new List<Widget>();
+    String urlFilterStr = "";
+    for (var val in UrlBuilder.fromUrl(filterString).entries) {
+      if (val.value != null) {
+        urlFilterStr = val.key.toString() + "=" + val.value.toString();
+        list.add(
+          Container(
+            height: 22,
+            margin: EdgeInsets.all(4),
+            color: Colors.transparent,
+            child: new Container(
+                padding: EdgeInsets.symmetric(horizontal: 4),
+                decoration: new BoxDecoration(
+                    color: Colors.lightBlueAccent.shade100,
+                    borderRadius: new BorderRadius.all(Radius.circular(30.0))),
+                child: new Center(
+                  child: new Text(
+                    urlFilterStr,
+                    style: new TextStyle(
+                      fontSize: 11.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                )),
+          ),
+        );
+      }
+    }
+    return list;
   }
 
-  clearFilter() {
-    this.filterDTO.search = "";
-    this.searchBarTextController.clear();
-    setState(() {
-      this.filterDTO = new ProdListFilterDTO();
-      service.getData(this.filterDTO).then((usersFromServer) {
-        setState(() {
-          listDTO = usersFromServer;
-        });
-      });
-    });
+  Widget showList(ProdListSavedFilterDTO list) {
+    return Expanded(
+      child: ListView.builder(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        itemCount: list != null ? list.savedFiltersList.length : 0,
+        itemBuilder: (BuildContext context, int index) {
+          return Menu(
+            tapType: TapType.longPress,
+            menuBar: MenuBar(
+              drawArrow: true,
+              itemPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+              menuItems: [
+                MenuItem(
+                  child: Menu(
+                    offset: Offset(0, 10),
+                    dismissOnClick: false,
+                    child: Icon(Icons.delete, color: Colors.red),
+                    menuBar: MenuBar(
+                        drawArrow: true,
+                        drawDivider: true,
+                        orientation: MenuOrientation.horizontal,
+                        menuItems: [
+                          MenuItem(
+                              onTap: () {
+                                setState(() {
+                                  service.deleteData(list.savedFiltersList[index]);
+                                  service
+                                      .getData(true, widget.parent.widget.objName)
+                                      .then((data) {
+                                    setState(() {
+                                      listPublicDTO = data;
+                                    });
+                                  });
+                                  service
+                                      .getData(false, widget.parent.widget.objName)
+                                      .then((data) {
+                                    setState(() {
+                                      listPrivateDTO = data;
+                                    });
+                                  });
+                                });
+                              },
+                              child: Icon(
+                                Icons.done,
+                                color: Colors.green,
+                              )),
+                          MenuItem(
+                              child: Icon(
+                            Icons.clear,
+                            color: Colors.red,
+                          ))
+                        ]),
+                  ),
+                ),
+                MenuItem(child: Icon(Icons.edit, color: Colors.blue)),
+              ],
+            ),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 3.5, vertical: 2.5),
+              padding: EdgeInsets.symmetric(horizontal: 3.5, vertical: 2.5),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey, width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              ),
+              child: InkWell(
+                onTap: () {
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Tap'),
+                    ));
+                  widget.parent.setDataFromSavedFilter(UrlBuilder.fromUrl(
+                      list.savedFiltersList[index].filterString));
+                  Navigator.pop(context);
+                },
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(list.savedFiltersList[index].name),
+                        RichText(
+                          text: new TextSpan(
+                            style: new TextStyle(
+                              fontSize: 11.0,
+                              color: Colors.black,
+                            ),
+                            children: <TextSpan>[
+                              new TextSpan(text: 'Created on '),
+                              new TextSpan(
+                                  text: Formater.getDateFromUnix(
+                                      list.savedFiltersList[index].created),
+                                  style: new TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                              new TextSpan(text: ' by '),
+                              new TextSpan(
+                                  text: list.savedFiltersList[index].username,
+                                  style: new TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: getFilterWidget(
+                            list.savedFiltersList[index].filterString),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

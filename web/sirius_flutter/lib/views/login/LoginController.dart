@@ -2,27 +2,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/assets/assets.dart';
-import 'package:sirius_flutter/helpers/AppData.dart';
-import 'package:sirius_flutter/views/dash/DashboardController.dart';
-import 'package:sirius_flutter/views/main/Main.dart';
+import 'package:sirius_flutter/helpers/Util.dart';
+import 'package:sirius_flutter/helpers/SharedStorage.dart';
+import 'package:sirius_flutter/views/main/MainController.dart';
+import 'package:sirius_flutter/views/menu/MenuController.dart';
 import 'package:sirius_flutter/views/signUp/SignUpController.dart';
 import 'LoginService.dart';
 
 class LoginController extends StatefulWidget {
-  TextEditingController usernameEmailTextController;
-  TextEditingController passwordTextController;
-  LoginService loginService;
-
   @override
   LoginState createState() => LoginState();
 }
 
 class LoginState extends State<LoginController> {
+  TextEditingController usernameEmailTextController;
+  TextEditingController passwordTextController;
+  LoginService loginService;
+  SharedStorage storage;
   bool showPassword = false;
   void initState() {
-    widget.usernameEmailTextController = new TextEditingController();
-    widget.passwordTextController = new TextEditingController();
-    widget.loginService = new LoginService();
+    super.initState();
+    usernameEmailTextController = new TextEditingController();
+    passwordTextController = new TextEditingController();
+    loginService = new LoginService(context);
+    storage = new SharedStorage();
   }
 
   @override
@@ -43,9 +46,9 @@ class LoginState extends State<LoginController> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 150),
+              padding: EdgeInsets.symmetric(horizontal: 50),
               child: TextField(
-                controller: widget.usernameEmailTextController,
+                controller: usernameEmailTextController,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: new InputDecoration(
                   filled: true,
@@ -64,10 +67,10 @@ class LoginState extends State<LoginController> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 150, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               child: TextField(
                 obscureText: !showPassword,
-                controller: widget.passwordTextController,
+                controller: passwordTextController,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: new InputDecoration(
                   filled: true,
@@ -138,7 +141,7 @@ class LoginState extends State<LoginController> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      SignUpController(),
+                                      new SignUpController(),
                                 ),
                                 (route) => false,
                               )
@@ -156,15 +159,19 @@ class LoginState extends State<LoginController> {
   }
 
   Future<void> logging() async {
-    var username = widget.usernameEmailTextController.text;
-    var password = widget.passwordTextController.text;
-    var jwt = await widget.loginService.attemptLogIn(username, password);
+    var username = usernameEmailTextController.text;
+    var password = passwordTextController.text;
+
+    var jwt = await loginService.attemptLogIn(username, password);
+    // Save JWT to app storage
+
+    SharedStorage.setJWT(jwt);
+
     if (jwt != null) {
-      AppData.tokenJWT = jwt;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => Main(),
+          builder: (BuildContext context) => MenuController(),
         ),
         (route) => false,
       );

@@ -2,6 +2,7 @@ package com.sirius.domain.controller.ware.prod;
 
 import com.sirius.domain.controller.helpers.StringHelper;
 import com.sirius.domain.model.ware.prod.ProductItemDTO;
+import com.sirius.domain.model.ware.prod.ProductListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class ProductListController {
     private EntityManager entityManager;
 
     @GetMapping("/products")
-    public List<ProductItemDTO> getAll(
+    public ProductListDTO getAll(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Integer skuFrom,
             @RequestParam(required = false) Integer skuTo,
@@ -40,7 +41,7 @@ public class ProductListController {
             @RequestParam(required = false) Integer quantityExact,
             @RequestParam(required = false) String quantityType
     ) throws IOException, InterruptedException {
-        // Thread.sleep(2 * 1000);
+        Thread.sleep(2 * 1000);
         String queryStr = new String(Files.readAllBytes(Paths.get("./src/main/resources/ware/products.sql")), StandardCharsets.UTF_8);
         Query query = entityManager.createNativeQuery(queryStr);
         List<ProductItemDTO> list = new ArrayList<>();
@@ -99,6 +100,15 @@ public class ProductListController {
                     .collect(Collectors.toList());
         }
 
-        return list;
+        // Get number of all in DB.
+        long count = controller.getAll().stream().count();
+        ProductListDTO dto = new ProductListDTO();
+        dto.setFilteredList(list);
+        dto.setCountAlInDB((int) count);
+        // Get list
+        return dto;
+
+
+
     }
 }

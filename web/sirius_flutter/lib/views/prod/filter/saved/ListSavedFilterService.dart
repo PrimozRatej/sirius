@@ -3,34 +3,35 @@ import 'package:dio/dio.dart';
 import 'package:dio/src/dio.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:sirius_flutter/assets/assets.dart';
+import 'package:sirius_flutter/helpers/DioClient.dart';
 import 'package:sirius_flutter/helpers/ErrorHandler.dart';
 import 'package:sirius_flutter/helpers/UrlBuilder.dart';
 import 'package:sirius_flutter/ixFrame/IxList/IxListService.dart';
 import 'package:http/http.dart' as http;
 import 'package:sirius_flutter/views/prod/filter/ProdFilterDTO.dart';
 
-import 'ProdListSavedFilterDTO.dart';
+import 'ListSavedFilterDTO.dart';
 
-class ProdSavedFilterServices implements IxObjectListService {
-  @override
+class ProdSavedFilterServices {
   BuildContext context;
-  @override
   Dio dio;
-  @override
   ErrorHandler erHandler;
-  @override
   bool isLoading = true;
-  @override
   String path = "/api/ware/filters";
 
-  @override
-  Future<ProdListSavedFilterDTO> getData([dto]) async {
+  ProdSavedFilterServices(BuildContext context) {
+    this.context = context;
+    erHandler = new ErrorHandler(context, PageType.DEFAULT);
+    dio = new DioClient().dio;
+  }
+
+  Future<ProdListSavedFilterDTO> getData(bool isPublic, String objName) async {
     isLoading = true;
     String url = Assets.domain + path;
-    if (dto != null) url = url + UrlBuilder.buildUrl(dto.toJson());
+    url = url + "?isPublic=$isPublic&objName=$objName";
     Response response = new Response();
     try{
-      response = await dio.get(Assets.domain + path);
+      response = await dio.get(url);
     }
     catch(e){
       erHandler.dioHandle(e);
@@ -38,5 +39,39 @@ class ProdSavedFilterServices implements IxObjectListService {
     ProdListSavedFilterDTO productsList = ProdListSavedFilterDTO.fromJson(response.data);
     isLoading = false;
     return productsList;
+  }
+
+  void saveData([dto]) async {
+    isLoading = true;
+    String url = Assets.domain + path;
+    Response response = new Response();
+    try{
+      response = await dio.post(url, data : dto, options: Options(
+          method: 'POST',
+          responseType: ResponseType.json // or ResponseType.JSON
+      ));
+      print(response);
+    }
+    catch(e){
+      erHandler.dioHandle(e);
+    }
+    ProdListSavedFilterDTO productsList = ProdListSavedFilterDTO.fromJson(response.data);
+    isLoading = false;
+  }
+
+  void deleteData([dto]) async {
+    isLoading = true;
+    String url = Assets.domain + path;
+    Response response = new Response();
+    try{
+      response = await dio.delete(url, data : dto, options: Options(
+          method: 'POST',
+          responseType: ResponseType.plain // or ResponseType.JSON
+      ));
+    }
+    catch(e){
+      erHandler.dioHandle(e);
+    }
+    isLoading = false;
   }
 }

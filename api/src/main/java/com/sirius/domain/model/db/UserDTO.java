@@ -1,6 +1,8 @@
 package com.sirius.domain.model.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sirius.domain.controller.db.UserRolesController;
+import com.sirius.exception.ResourceNotFoundException;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +23,7 @@ public class UserDTO {
     private String username;
 
     @NotBlank
+    @JsonIgnore
     private String password;
 
     private String firstName;
@@ -38,6 +41,12 @@ public class UserDTO {
     private Date lastLogin;
 
     private Boolean isOnline;
+
+    private String picture;
+
+    private String userType;
+
+    private Boolean verified;
 
     public Integer getId() {
         return id;
@@ -125,4 +134,32 @@ public class UserDTO {
 
     public void setIsOnline(Boolean isOnline) { this.isOnline = isOnline; }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public UserDTO orElseThrow(ResourceNotFoundException exception) {
+        throw exception;
+    }
 }
+

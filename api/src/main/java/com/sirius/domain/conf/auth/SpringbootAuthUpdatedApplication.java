@@ -9,8 +9,10 @@ public class SpringbootAuthUpdatedApplication {
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        return SpringbootAuthUpdatedApplication.getEncoder();
     }
 
-    // ... main method definition
+    public static BCryptPasswordEncoder getEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 }

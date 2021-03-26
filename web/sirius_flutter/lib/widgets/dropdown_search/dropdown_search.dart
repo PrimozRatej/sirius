@@ -74,7 +74,7 @@ class DropdownSearch<T> extends StatefulWidget {
   final Widget popupTitle;
 
   ///customize the fields the be shown
-  final DropdownSearchItemAsString<T> itemAsString;
+  DropdownSearchItemAsString<T> itemAsString;
 
   ///	custom filter function
   final DropdownSearchFilterFn<T> filterFn;

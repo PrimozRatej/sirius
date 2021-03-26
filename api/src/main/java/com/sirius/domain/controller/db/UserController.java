@@ -1,6 +1,8 @@
 package com.sirius.domain.controller.db;
 
 import com.sirius.domain.conf.auth.AuthUser;
+import com.sirius.domain.conf.auth.SpringbootAuthUpdatedApplication;
+import com.sirius.domain.controller.util.UtilController;
 import com.sirius.domain.model.db.UserDTO;
 import com.sirius.domain.repository.db.UserRepository;
 import com.sirius.exception.ResourceNotFoundException;
@@ -20,8 +22,8 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserRepository repository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    public UserRepository repository;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // Get All Users
     @GetMapping("/user")
@@ -40,6 +42,14 @@ public class UserController {
     public UserDTO getById(@PathVariable(value = "id") Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+    }
+
+    // Get a Single User
+    @GetMapping("/user/{name}")
+    public UserDTO getByName(@PathVariable(value = "name") String name) {
+        UserDTO user = repository.findAll().stream().filter(usr -> usr.getUsername().equals(name)).findFirst().orElse(null);
+        if (user != null) return user;
+        else  throw new ResourceNotFoundException("User", "name", name);
     }
 
     // Update a User
@@ -68,7 +78,6 @@ public class UserController {
     }
 
     // Aplication user
-
     public UserController(UserRepository userRepository,
                           BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.repository = userRepository;
@@ -79,7 +88,7 @@ public class UserController {
     public void signUp(@RequestBody AuthUser user) {
         UserDTO userR = new UserDTO();
         userR.setUsername(user.getUsername());
-        userR.setPasswordHash(bCryptPasswordEncoder.encode(user.getPassword()));
+        userR.setPasswordHash(SpringbootAuthUpdatedApplication.getEncoder().encode(user.getPassword()));
         userR.setEmail(user.getEmail());
         userR.setIsOnline(false);
         userR.setIpAddress("10.0.0.12");

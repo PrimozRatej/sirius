@@ -1,4 +1,5 @@
 import 'package:sirius_flutter/ixFrame/IxList/IxListFilterDTO.dart';
+import 'package:sirius_flutter/views/lookup/QuantityType/QuantityTypeLookupModelDTO.dart';
 
 class ProdListFilterDTO implements IxListFilterDTO {
   String search;
@@ -11,7 +12,7 @@ class ProdListFilterDTO implements IxListFilterDTO {
   int quantityFrom;
   int quantityTo;
   //QuantityType
-  String quantityType;
+  QuantityTypeLookupModelDTO quantityType;
 
   ProdListFilterDTO(
       {this.search,

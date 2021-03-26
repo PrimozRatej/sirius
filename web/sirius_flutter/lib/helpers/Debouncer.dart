@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:html';
+import 'package:dio/dio.dart';
 
 class Debouncer {
   final int milliseconds;

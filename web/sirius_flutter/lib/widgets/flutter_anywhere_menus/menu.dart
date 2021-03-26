@@ -36,6 +36,8 @@ class Menu extends StatefulWidget {
 
   /// This sets what type of tap (onTap, onDoubleTap, etc) this menu will respond to.
   final TapType tapType;
+  /// This sets what type of tap (onTap, onDoubleTap, etc) this menu will respond to.
+  final bool dismissOnClick;
 
   const Menu({
     Key key,
@@ -46,6 +48,7 @@ class Menu extends StatefulWidget {
     this.position = MenuPosition.outside,
     this.offset = Offset.zero,
     this.tapType = TapType.tap,
+    this.dismissOnClick = true,
   }) : super(key: key);
 
   @override
@@ -64,6 +67,7 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       key: key,
       onTap: widget.tapType == TapType.tap && !widget.menuOverTap
@@ -107,7 +111,8 @@ class _MenuState extends State<Menu> {
     );
   }
 
-  void buildMenu({Offset tapOffset}) {
+  void buildMenu({Offset tapOffset,  bool isChild}) {
+    if (widget.dismissOnClick) dismiss();
     MenuAlignment _childAlignmentOnMenu;
     //Computes the child alignment point
     if (tapOffset != null) {
@@ -143,6 +148,7 @@ class _MenuState extends State<Menu> {
       builder: (context) => GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => dismiss(),
+        /*onLongPress: () => dismiss(),*/
         child: Stack(children: [
           CompositedTransformFollower(
             link: layerLink,

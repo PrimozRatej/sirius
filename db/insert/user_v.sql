@@ -1,29 +1,119 @@
-SELECT SYSDATE() as timestamp, 'start user_v.sql' as decsription;
-insert into user
-    (id, username, password, first_Name, last_Name, email, gender, ip_address, registered, last_login, is_online)
-values
-    (1, 'tleblond0', '5ebe734b817ff20151ed0b3dfbeeb2e9b0f6cc6b7317f317690f1f59efc694ec', 'Teodora', 'Le Blond', 'tleblond0@tinypic.com', 'Female', '164.21.114.217', '2019-12-28 13:09:32', '2019-04-29 16:44:00', FALSE);
-insert into user
-    (id, username, password, first_Name, last_Name, email, gender, ip_address, registered, last_login, is_online)
-values
-    (2, 'gmacalroy1', '076408a260dbbf74082cce97d25e415b516a11619d8d51b5c39d056255792b9c', 'Grange', 'MacAlroy', 'gmacalroy1@redcross.org', 'Male', '187.92.104.186', '2020-01-20 19:40:23', '2019-11-05 03:06:15', FALSE);
-insert into user
-    (id, username, password, first_Name, last_Name, email, gender, ip_address, registered, last_login, is_online)
-values
-    (3, 'slundy2', '69c8eeff0bc4d159bb76c1137df6181103dd6e34de539c0440fd8acded368055', 'Sib', 'Lundy', 'slundy2@nps.gov', 'Female', '65.200.49.144', '2019-06-11 04:10:17', '2019-11-28 14:53:14', FALSE);
-insert into user
-    (id, username, password, first_Name, last_Name, email, gender, ip_address, registered, last_login, is_online)
-values
-    (4, 'vlamblin3', 'b9763029b5ad1e8ad4c0bee753ed9ee8f61d9ae343892eb262016eca4df5b7f6', 'Valry', 'Lamblin', 'vlamblin3@blog.com', 'Female', '242.33.122.31', '2019-09-14 02:15:09', '2019-04-21 07:17:32', FALSE);
-insert into user
-    (id, username, password, first_Name, last_Name, email, gender, ip_address, registered, last_login, is_online)
-values
-    (5, 'zantczak4', '5b462e38fa9bd192e3e26c8ee0c04454b407d161c4021b44f8bb2d89c163ed7b', 'Zacharie', 'Antczak', 'zantczak4@opensource.org', 'Male', '128.74.53.9', '2019-04-22 23:51:16', '2020-01-07 00:28:38', FALSE);
-insert into user
-    (id, username, password, first_Name, last_Name, email, gender, ip_address, registered, last_login, is_online)
-values
-    (6, 'warehouse1', '5b462e38fa9bd192e3e26c8ee0c04454b407d161c4021b44f8bb2d89c163ed7b', 'warehouse1', 'warehouse1', 'warehouse1@shoe-store.com', 'Male', '10.0.1.1', '2010-04-22 23:51:16', '2020-01-07 00:28:38', FALSE);
-    insert into user
-    (id, username, password, first_Name, last_Name, email, gender, ip_address, registered, last_login, is_online)
-values
-    (7, 'admin', 'admin', 'admin', 'admin', 'admin@sirius-store.com', 'male', '10.0.1.1', '2010-04-22 23:51:16', '2020-01-07 00:28:38', FALSE);
+SELECT
+    SYSDATE() as timestamp,
+    'start user_v.sql' as decsription;
+
+INSERT INTO
+    user
+VALUES
+(
+        1,
+        'admin',
+        '$2a$10$EaSz1dMbx8LdpbELi1rLgukN1wnAWT9UsK1Y5f3FNUKaMgASeYKWe',
+        'admin',
+        'the Boss',
+        'admin@sirius-store.com',
+        'male',
+        '10.0.1.1',
+        '2010-04-22 23:51:16',
+        '2020-01-07 00:28:38',
+        0,
+        'https://i.imgur.com/htQjj8d.png',
+        'Admin',
+        true
+    ),
+(
+        2,
+        'admin1',
+        '$2a$10$l8LXbDXg/7s1ZdW/Z0P25uiltCyKDt7JNDFWFMbA8FsxGIjko.Ik6',
+        'Tom',
+        'Hanks',
+        'admin1@email.com',
+        'male',
+        '10.0.0.12',
+        '2021-03-07 16:13:50',
+        NULL,
+        0,
+        'https://imgur.com/9kY8XfA.png',
+        'Admin',
+        true
+    ),
+(
+        3,
+        'admin2',
+        '$2a$10$1AB/oLKKvMaetmTM6VMzFOx6v3urNB2Mxkgw05zQHvH98I9qoTN3W',
+        'Clint',
+        'Eastwood',
+        'admin2@email.com',
+        'male',
+        '10.0.0.12',
+        '2021-03-07 16:16:30',
+        NULL,
+        0,
+        'https://imgur.com/NBD2oCo.png',
+        'Almost admin',
+        true
+    ),
+(
+        4,
+        'admin3',
+        '$2a$10$taWQVEi8ecIg/DSmbzMyEOMxyfLS7YfsBzyy6E9Pd349pu.IMhU42',
+        'Scarlett',
+        'Johansson',
+        'admin3@email.com',
+        'female',
+        '10.0.0.12',
+        '2021-03-07 16:16:35',
+        NULL,
+        0,
+        'https://imgur.com/2DjaLVK.png',
+        'User',
+        true
+    ),
+(
+        5,
+        'user1',
+        '$2a$10$0NQa9CW9FtfGqugflWFkyOjAn53aus44068kimLiDluarSWmBW2ZK',
+        'Jesse',
+        'Jane',
+        'user1@email.com',
+        'female',
+        '10.0.0.12',
+        '2021-03-07 16:16:42',
+        NULL,
+        0,
+        'https://imgur.com/3quUaEo.png',
+        'User',
+        true
+    ),
+(
+        6,
+        'user2',
+        '$2a$10$qQdjflJZ4LOJen6CZqBMA.0QyNQ6DKegLgqN5VKSIu7KhIX4E3q1m',
+        'Chris',
+        'Hemsworth',
+        'user2@email.com',
+        'male',
+        '10.0.0.12',
+        '2021-03-07 16:16:46',
+        NULL,
+        0,
+        'https://imgur.com/jTpS64U.png',
+        'User',
+        true
+    ),
+(
+        7,
+        'user3',
+        '$2a$10$vTZJsUsMDPw63rb8wt.Lcek07.BgCDXZhmO3Kgow5wHuvQ8P6e7ky',
+        'Robert',
+        'Downey jr',
+        'user3@email.com',
+        'male',
+        '10.0.0.12',
+        '2021-03-07 16:16:51',
+        NULL,
+        0,
+        'https://imgur.com/J25jDgF.png',
+        'User',
+        false
+    );

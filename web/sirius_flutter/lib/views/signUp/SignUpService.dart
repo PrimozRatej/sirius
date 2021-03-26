@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sirius_flutter/assets/assets.dart';
-import 'package:sirius_flutter/helpers/AppData.dart';
+import 'package:sirius_flutter/helpers/Util.dart';
 import 'package:sirius_flutter/helpers/ResponseParser.dart';
 
 class SignUpService {

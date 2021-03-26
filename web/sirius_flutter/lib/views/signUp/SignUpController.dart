@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/assets/assets.dart';
-import 'package:sirius_flutter/helpers/AppData.dart';
 import 'package:sirius_flutter/views/login/LoginController.dart';
-import 'package:sirius_flutter/views/main/Main.dart';
+import 'package:sirius_flutter/views/main/MainController.dart';
 import 'SignUpService.dart';
 
 class SignUpController extends StatefulWidget {
@@ -46,7 +45,7 @@ class SignUpState extends State<SignUpController> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 150),
+              padding: EdgeInsets.symmetric(horizontal: 50),
               child: TextField(
                 controller: widget.usernameTextController,
                 textAlignVertical: TextAlignVertical.bottom,
@@ -67,7 +66,7 @@ class SignUpState extends State<SignUpController> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(150, 20, 150, 0),
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               child: TextField(
                 controller: widget.emailTextController,
                 textAlignVertical: TextAlignVertical.bottom,
@@ -88,8 +87,9 @@ class SignUpState extends State<SignUpController> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(150, 20, 150, 0),
+              padding: EdgeInsets.symmetric(horizontal: 50),
               child: TextField(
+                obscureText: true,
                 controller: widget.passwordFirstTextController,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: new InputDecoration(
@@ -109,8 +109,9 @@ class SignUpState extends State<SignUpController> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(150, 20, 150, 20),
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               child: TextField(
+                obscureText: true,
                 controller: widget.passwordSecTextController,
                 textAlignVertical: TextAlignVertical.bottom,
                 decoration: new InputDecoration(
@@ -170,7 +171,8 @@ class SignUpState extends State<SignUpController> {
                               )
                             },
                       text: 'Sign in',
-                      style: new TextStyle(color: Colors.blue)),
+                      style: new TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.bold)),
                 ],
               ),
             )
@@ -188,7 +190,8 @@ class SignUpState extends State<SignUpController> {
     var isSuc = await widget.signUpService
         .attemptSignUp(username, passwordFirst, email);
     if (isSuc == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Main()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MainController()));
     } else {
       showAlertDialog(context);
     }

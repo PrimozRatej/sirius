@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/views/dash/DashboardService.dart';
 
@@ -16,8 +14,8 @@ class DashboardControllerState extends State<DashboardController> {
   @override
   void initState() {
     super.initState();
-    service = new DashboardService();
-    futureDashBoardDTO = service.getData(null) as Future<DashboardDTO>;
+    service = new DashboardService(context);
+    futureDashBoardDTO = service.getData();
   }
 
   EdgeInsetsGeometry padding = EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 11.0);
@@ -42,8 +40,7 @@ class DashboardControllerState extends State<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Center(
         child: Column(
           children: <Widget>[
             Expanded(
@@ -67,9 +64,9 @@ class DashboardControllerState extends State<DashboardController> {
                           elevation: 30.0,
                           color: Colors.green.shade300,
                           highlightElevation: 0.0,
-                          onPressed: () {
+                          onPressed: () async {
                             setState(() {
-                              futureDashBoardDTO = service.getData(null);
+                              futureDashBoardDTO = service.getData();
                             });
                           },
                           splashColor: Colors.green,
@@ -86,6 +83,7 @@ class DashboardControllerState extends State<DashboardController> {
                 ),
               ),
             ),
+            SizedBox(height: 15),
             Expanded(
               flex: 14,
               child: FutureBuilder<DashboardDTO>(
@@ -102,8 +100,7 @@ class DashboardControllerState extends State<DashboardController> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Widget getDashboard(
@@ -112,6 +109,7 @@ class DashboardControllerState extends State<DashboardController> {
       // backgroundColor: Color(0xF5F5F5F5),
       body: Center(
         child: ListView(
+          physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             Container(
               margin: padding,

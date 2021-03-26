@@ -10,9 +10,10 @@ class SearchBar extends StatefulWidget {
   IxListService service;
   List<IxListItemDTO> filteredUsers;
   TextEditingController textController;
+  final Function() notifyParent;
 
   SearchBar(IxListFilterDTO filterDTO, IxListService service,
-      List<IxListItemDTO> filteredUsers) {
+      List<IxListItemDTO> filteredUsers, this.notifyParent) {
     this.filterDTO = filterDTO;
     this.service = service;
     this.filteredUsers = filteredUsers;
@@ -36,10 +37,15 @@ class SearchBarState extends State<SearchBar> {
       child: FutureBuilder(builder: (context, snapshot) {
         return TextField(
           controller: widget.textController,
-          onChanged: (string) {
+          onChanged: (searchStr) {
             _debouncer.run(() {
-              doSearch(widget.filterDTO, widget.service, string,
-                  widget.filteredUsers);
+              setState(() {
+                widget.filterDTO.search = searchStr;
+                widget.service.getData(widget.filterDTO).then((usersFromServer) {
+                  widget.filterDTO.search = searchStr;
+                  widget.filteredUsers = usersFromServer;
+                });
+              });
             });
           },
           textAlignVertical: TextAlignVertical.bottom,
@@ -77,14 +83,11 @@ class SearchBarState extends State<SearchBar> {
 
   List<IxListItemDTO> doSearch(IxListFilterDTO filterDTO, IxListService service,
       String searchStr, List<IxListItemDTO> filteredUsers) {
-    setState(() {
+    filterDTO.search = searchStr;
+    service.getData(filterDTO).then((usersFromServer) {
       filterDTO.search = searchStr;
-      service.getListData(filterDTO).then((usersFromServer) {
-        setState(() {
-          filterDTO.search = searchStr;
-          filteredUsers = usersFromServer;
-        });
-      });
+      filteredUsers = usersFromServer;
     });
+    return filteredUsers;
   }
 }

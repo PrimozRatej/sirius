@@ -1,6 +1,6 @@
 {
-    "name": "sirius_flutter",
-    "short_name": "sirius_flutter",
+    "name": "Sirius",
+    "short_name": "Sirius",
     "start_url": ".",
     "display": "minimal-ui",
     "background_color": "#0175C2",
@@ -10,12 +10,12 @@
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "icons/Icon-192.png",
+            "src": "icons/logo-icon-192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "icons/Icon-512.png",
+            "src": "icons/logo-icon-192.png",
             "sizes": "512x512",
             "type": "image/png"
         }

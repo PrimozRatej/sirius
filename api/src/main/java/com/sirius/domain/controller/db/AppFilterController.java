@@ -17,6 +17,10 @@ import java.util.List;
 @RequestMapping("/api/domain")
 public class AppFilterController {
 
+    public AppFilterController(AppFilterRepository repository){
+        this.repository = repository;
+    }
+
     @Autowired
     AppFilterRepository repository;
 
