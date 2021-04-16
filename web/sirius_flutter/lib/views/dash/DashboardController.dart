@@ -1,19 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:sirius_flutter/assets/assets.dart';
+import 'package:sirius_flutter/ixFrame/IxMaterialPageRoute/IxMaterialPageRoute.dart';
 import 'package:sirius_flutter/views/dash/DashboardService.dart';
+import 'package:sirius_flutter/views/menu/MenuController.dart';
 
+import '../Notifications.dart';
 import 'DashboardDTO.dart';
 
+// ignore: must_be_immutable
 class DashboardController extends StatefulWidget {
-  createState() => DashboardControllerState();
+  MenuController parentMenuController;
+  DashboardControllerState state;
+  MenuState menuState;
+
+  DashboardController(MenuState inMenuState){
+    menuState = inMenuState;
+  }
+
+  createState() =>  state = DashboardControllerState(menuState);
 }
 
 class DashboardControllerState extends State<DashboardController> {
   Future<DashboardDTO> futureDashBoardDTO;
   DashboardService service;
+  MenuState menuState;
+
+  DashboardControllerState(MenuState inMenuState){
+    menuState = inMenuState;
+  }
 
   @override
   void initState() {
+
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        menuState.setState(() {
+          menuState.appBar = getAppBar();
+        });
+      });
+    });
+
     service = new DashboardService(context);
     futureDashBoardDTO = service.getData();
   }
@@ -95,7 +123,7 @@ class DashboardControllerState extends State<DashboardController> {
                       return Text("${snapshot.error}");
                     }
                     // By default, show a loading spinner.
-                    return Center(child: CircularProgressIndicator());
+                    return Container();/*Center(child: CircularProgressIndicator())*/;
                   }),
             ),
           ],
@@ -332,6 +360,25 @@ class DashboardControllerState extends State<DashboardController> {
           ],
         ),
       ),
+    );
+  }
+  AppBar getAppBar() {
+    return AppBar(
+      backgroundColor: Colors.black,
+      centerTitle: true,
+      title: Image.network(Assets.siriusNavBarLogoWhite,
+          width: 145, height: 50, fit: BoxFit.fill),
+      actions: <Widget>[
+        new IconButton(
+            icon: Icon(Icons.notification_important),
+            onPressed: () {
+              Navigator.push(
+                context,
+                IxMaterialPageRoute(
+                    builder: (context) => NotificationComponent()),
+              );
+            })
+      ],
     );
   }
 }

@@ -171,7 +171,7 @@ class LoginState extends State<LoginController> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => MenuController(),
+          builder: (BuildContext context) => MainController(),
         ),
         (route) => false,
       );

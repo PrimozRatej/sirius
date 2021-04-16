@@ -1,37 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sirius_flutter/assets/assets.dart';
 import 'package:sirius_flutter/helpers/Debouncer.dart';
 import 'package:sirius_flutter/helpers/UrlBuilder.dart';
+import 'package:sirius_flutter/ixFrame/IxMaterialPageRoute/IxMaterialPageRoute.dart';
 import 'package:sirius_flutter/views/lookup/QuantityType/QuantityTypeLookupModelDTO.dart';
-import 'package:sirius_flutter/views/prod/filter/ProdFilterDTO.dart';
-import 'package:sirius_flutter/views/prod/filter/saved/ListSavedFilterService.dart';
+import 'package:sirius_flutter/views/menu/MenuController.dart';
+import 'package:sirius_flutter/views/prod/export/ExportController.dart';
+import 'package:sirius_flutter/views/prod/obj/ProdObjectController.dart';
+import 'package:sirius_flutter/views/prod/order/OrderByController.dart';
 import 'ProdListDTO.dart';
 import 'ProdListFilterDTO.dart';
 import 'ProdListServices.dart';
 import 'ProdItemController.dart';
 import 'filter/ProdFilterController.dart';
 
+// ignore: must_be_immutable
 class ProdListController extends StatefulWidget {
-  ProdListController() : super();
   String objName = "prod";
-  ProdListState state;
+  ProdListState prodListState;
+  MenuController parentMenuController;
+  MenuState menuState;
+
+
+  ProdListController(MenuState inMenuState){
+    menuState = inMenuState;
+  }
+
   @override
-  ProdListState createState() => state = ProdListState();
+  ProdListState createState() => prodListState = ProdListState(menuState);
 }
 
 class ProdListState extends State<ProdListController> {
-  // Time to animate dropdown menu.
-  int debouncerMilTime = 500;
   // List of objects
   ProdListDTO listDTO;
   ProdListFilterDTO filterDTO;
   ProdListServices service;
+  MenuState menuState;
+  List<OrderByDTO> orderByList;
 
   TextEditingController searchBarTextController;
   final debouncer = Debouncer(milliseconds: 500);
 
   // Controllers
   ProdFilterController filterController;
+
+  ProdListState(MenuState inMenuState){
+    menuState = inMenuState;
+  }
 
   @override
   void initState() {
@@ -41,17 +57,28 @@ class ProdListState extends State<ProdListController> {
 
     super.initState();
 
-    filterController = new ProdFilterController(widget.state);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        menuState.setState(() {
+          menuState.appBar = getAppBar();
+        });
+      });
+    });
+
+    filterController = new ProdFilterController(widget.prodListState);
 
     service.getData(filterDTO).then((usersFromServer) {
       setState(() {
         listDTO = usersFromServer;
       });
     });
+
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -131,13 +158,6 @@ class ProdListState extends State<ProdListController> {
                   ),
                 )
               : Scaffold(),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("SKU"), Text("Name"), Text("quantity")],
-            ),
-          ),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -183,17 +203,13 @@ class ProdListState extends State<ProdListController> {
         padding: EdgeInsets.all(15.0),
         child: FloatingActionButton(
           onPressed: () {
-            showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext bc) {
-                  return Container(
-                      height:
-                          MediaQuery.of(context).copyWith().size.height * 0.75,
-                      child: filterController);
-                });
+            Navigator.push(
+              context,
+              IxMaterialPageRoute(
+                  builder: (context) => Scaffold(body: ProdObjectController(),)/*ProdObjectController(widget.menuState)*/),
+            );
           },
-          child: Icon(Icons.filter_alt),
+          child: Icon(Icons.add),
         ),
       ),
     );
@@ -271,11 +287,71 @@ class ProdListState extends State<ProdListController> {
                   color: Colors.lightBlueAccent,
                   borderRadius: new BorderRadius.all(Radius.circular(30.0))),
               child: new Center(
-                child: new Text(urlFilterStr),
+                child: Row(
+                  children: [
+                    Text(urlFilterStr),
+                    new GestureDetector(
+                      onTap: () {
+                        
+                      },
+                      child: Icon(Icons.clear),
+                    ),
+                  ],
+                ),
               )),
         ));
       }
     }
     return list;
+  }
+
+  AppBar getAppBar() {
+    return AppBar(
+      backgroundColor: Colors.black,
+      centerTitle: true,
+      title: Image.network(Assets.siriusNavBarLogoWhite,
+          width: 145, height: 50, fit: BoxFit.fill),
+      actions: <Widget>[
+        new IconButton(
+            icon: Icon(Icons.filter_alt),
+            onPressed: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext bc) {
+                    return Container(
+                        height:
+                        MediaQuery.of(context).copyWith().size.height * 0.60,
+                        child: filterController);
+                  });
+            }),
+        new IconButton(
+            icon: Icon(Icons.sort),
+            onPressed: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext bc) {
+                    return Container(
+                        height:
+                        MediaQuery.of(context).copyWith().size.height * 0.33,
+                        child: OrderByController(this));
+                  });
+            }),
+        new IconButton(
+            icon: Icon(Icons.file_download),
+            onPressed: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext bc) {
+                    return Container(
+                        height:
+                        MediaQuery.of(context).copyWith().size.height * 0.60,
+                        child: ExportController(this));
+                  });
+            }),
+      ],
+    );
   }
 }

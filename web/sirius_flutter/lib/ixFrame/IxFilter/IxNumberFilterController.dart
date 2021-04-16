@@ -49,8 +49,8 @@ class IxNumberFilterState extends State<IxNumberFilter> {
     return Container(
       child: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 3.5, vertical: 2.5),
-          padding: EdgeInsets.symmetric(horizontal: 3.5, vertical: 2.5),
+          margin: EdgeInsets.symmetric(horizontal: 3.5),
+          padding: EdgeInsets.symmetric(horizontal: 3.5),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey, width: 2),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -138,7 +138,8 @@ class IxNumberFilterState extends State<IxNumberFilter> {
                           child: valueText = new TextFormField(
                             controller: widget.valueController,
                             decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
+                              // Border red for filter formatting.
+                              /*focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0),
                                 borderSide: BorderSide(
                                   color: Colors.blue,
@@ -150,7 +151,7 @@ class IxNumberFilterState extends State<IxNumberFilter> {
                                   color: Colors.red,
                                   width: 2.0,
                                 ),
-                              ),
+                              ),*/
                               isDense: true,
                               contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                               labelText: 'Value',

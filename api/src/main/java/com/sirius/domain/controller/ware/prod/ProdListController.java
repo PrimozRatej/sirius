@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/ware")
 @Component
-public class ProductListController {
+public class ProdListController {
 
     @Autowired
     ProductController controller;
@@ -107,8 +107,5 @@ public class ProductListController {
         dto.setCountAlInDB((int) count);
         // Get list
         return dto;
-
-
-
     }
 }

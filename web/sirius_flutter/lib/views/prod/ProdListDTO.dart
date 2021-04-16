@@ -65,4 +65,29 @@ class ProductItemDTO implements IxListItemDTO {
     data['quaType'] = this.quaType;
     return data;
   }
+
+  dynamic getPropVal(String propName){
+    switch (propName) {
+      case 'id':
+        return this.id;
+        break;
+      case 'imgurImgPath':
+        return this.imgurImgPath;
+        break;
+      case 'barCodeNum':
+        return this.barCodeNum;
+        break;
+      case 'name':
+        return this.name;
+        break;
+      case 'quantity':
+        return this.quantity;
+        break;
+      case 'quaType':
+        return this.quaType;
+        break;
+      default:
+        return null;
+    }
+  }
 }

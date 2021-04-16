@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:sirius_flutter/helpers/IxScaffoldMessenger.dart';
 import 'package:sirius_flutter/helpers/UrlBuilder.dart';
 import 'package:sirius_flutter/helpers/Util.dart';
 import 'package:sirius_flutter/ixFrame/IxFilter/IxNumberFilterController.dart';
@@ -37,7 +38,6 @@ class ProdFilterControllerState extends State<ProdFilterController> {
   bool isSavedFilterPrivate = false;
   TextEditingController filterNameController;
 
-
   @override
   void initState() {
     // Filters init
@@ -56,166 +56,176 @@ class ProdFilterControllerState extends State<ProdFilterController> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(55),
-          child: AppBar(
-            backgroundColor: Colors.black,
-            /*shadowColor: Colors.yellow,*/
-            leading: Container(),
-            bottom: TabBar(
-              indicatorColor: Colors.red,
-              tabs: [
-                Tab(
-                    icon: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Icon(Icons.filter_alt),
-                    ),
-                    Text("Set filter"),
-                  ],
-                )),
-                Tab(
-                    icon: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Icon(Icons.save),
-                    ),
-                    Text("Saved filters"),
-                  ],
-                )),
-              ],
-            ),
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            Scaffold(
-              resizeToAvoidBottomInset: false,
-              floatingActionButton: SpeedDial(
-                marginEnd: 18,
-                marginBottom: 20,
-                icon: Icons.add,
-                activeIcon: Icons.remove,
-                buttonSize: 56.0,
-                visible: true,
-                closeManually: false,
-                renderOverlay: false,
-                curve: Curves.bounceIn,
-                overlayColor: Colors.black,
-                overlayOpacity: 0,
-                tooltip: 'Speed Dial',
-                heroTag: 'speed-dial-hero-tag',
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                elevation: 8.0,
-                shape: CircleBorder(),
-                children: [
-                  SpeedDialChild(
-                    child: Icon(Icons.search),
-                    backgroundColor: Colors.green,
-                    label: 'Search',
-                    labelStyle: TextStyle(fontSize: 18.0),
-                    onTap: () {
-                      onFilterCall();
-                      Navigator.pop(context);
-                    },
-                  ),
-                  SpeedDialChild(
-                    child: Icon(Icons.clear),
-                    backgroundColor: Colors.red,
-                    label: 'Clear',
-                    labelStyle: TextStyle(fontSize: 18.0),
-                    onTap: () {
-                      widget.parent.clearFilter();
-                      Navigator.pop(context);
-                    },
-                  ),
-                  SpeedDialChild(
-                    child: Icon(Icons.save),
-                    backgroundColor: Colors.yellow,
-                    label: 'Save',
-                    labelStyle: TextStyle(fontSize: 18.0),
-                    onTap: () {
-                      saveFilter();
-                      Navigator.pop(context);
-                    },
-                  ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(55),
+            child: AppBar(
+              backgroundColor: Colors.black,
+              /*shadowColor: Colors.yellow,*/
+              leading: Container(),
+              bottom: TabBar(
+                indicatorColor: Colors.red,
+                tabs: [
+                  Tab(
+                      icon: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Icon(Icons.filter_alt),
+                      ),
+                      Text("Set filter"),
+                    ],
+                  )),
+                  Tab(
+                      icon: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Icon(Icons.save),
+                      ),
+                      Text("Saved filters"),
+                    ],
+                  )),
                 ],
               ),
-              body: Column(
-                children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          padding: EdgeInsets.fromLTRB(10,10,0,10),
-                          child: TextField(
-                            controller: filterNameController,
-                            textAlignVertical: TextAlignVertical.bottom,
-                            decoration: new InputDecoration(
-                              filled: true,
-                              fillColor: Color(0xbddff5f5),
-                              prefixIcon: Icon(Icons.filter_alt),
-                              hintText: "Filter name",
-                              enabledBorder: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25.0)),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25.0)),
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: CheckboxListTile(
-                            title: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Text("Private", /*style: TextStyle(
-                                fontSize: 14.0,
-                              ),*/),
-                            ),
-                            value: isSavedFilterPrivate,
-                            onChanged: (newValue) {
-                              setState(() {
-                                isSavedFilterPrivate = newValue;
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity
-                                .platform, //  <-- leading Checkbox
-                          ),
-                        ),
-                      ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              Scaffold(
+                resizeToAvoidBottomInset: false,
+                floatingActionButton: SpeedDial(
+                  marginEnd: 18,
+                  marginBottom: 20,
+                  icon: Icons.add,
+                  activeIcon: Icons.remove,
+                  buttonSize: 56.0,
+                  visible: true,
+                  closeManually: false,
+                  renderOverlay: false,
+                  curve: Curves.bounceIn,
+                  overlayColor: Colors.black,
+                  overlayOpacity: 0,
+                  tooltip: 'Speed Dial',
+                  heroTag: 'speed-dial-hero-tag',
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  elevation: 8.0,
+                  shape: CircleBorder(),
+                  children: [
+                    SpeedDialChild(
+                      child: Icon(Icons.search),
+                      backgroundColor: Colors.green,
+                      label: 'Search',
+                      labelStyle: TextStyle(fontSize: 18.0),
+                      onTap: () {
+                        onFilterCall();
+                        Navigator.pop(context);
+                      },
                     ),
-                  ),
-                  SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Wrap(
+                    SpeedDialChild(
+                      child: Icon(Icons.clear),
+                      backgroundColor: Colors.red,
+                      label: 'Clear',
+                      labelStyle: TextStyle(fontSize: 18.0),
+                      onTap: () {
+                        widget.parent.clearFilter();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    SpeedDialChild(
+                      child: Icon(Icons.save),
+                      backgroundColor: Colors.yellow,
+                      label: 'Save',
+                      labelStyle: TextStyle(fontSize: 18.0),
+                      onTap: () {
+                        if (filterNameController.value.text.isEmpty) {
+                          IxScaffoldMessenger.show(context, "Filter need\'s to have a name.", type: MsgType.ERROR);
+                        }
+                        if (isFilterEmpty())
+                          IxScaffoldMessenger.show(context, "Filter is empty, set a filter for saving.", type: MsgType.ERROR);
+                        saveFilter();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+                body: Column(
+                  children: [
+                    Container(
+                      child: Row(
                         children: [
-                          skuFilter,
-                          quantityFilter,
-                          quantityTypeLookupFilter,
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                            child: TextField(
+                              controller: filterNameController,
+                              textAlignVertical: TextAlignVertical.bottom,
+                              decoration: new InputDecoration(
+                                filled: true,
+                                fillColor: Color(0xbddff5f5),
+                                prefixIcon: Icon(Icons.filter_alt),
+                                hintText: "Filter name",
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25.0)),
+                                  borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25.0)),
+                                  borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: CheckboxListTile(
+                              title: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Text(
+                                  "Private", /*style: TextStyle(
+                                  fontSize: 14.0,
+                                ),*/
+                                ),
+                              ),
+                              value: isSavedFilterPrivate,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  isSavedFilterPrivate = newValue;
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity
+                                  .platform, //  <-- leading Checkbox
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    SingleChildScrollView(
+                      child: Container(
+                        child: Wrap(
+                          children: [
+                            skuFilter,
+                            quantityFilter,
+                            quantityTypeLookupFilter,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Center(child: ProdListSavedFilterController(widget.parent))
-          ],
+              Center(child: ProdListSavedFilterController(widget.parent))
+            ],
+          ),
         ),
       ),
     );
@@ -258,8 +268,7 @@ class ProdFilterControllerState extends State<ProdFilterController> {
     //QuantityType
     quantityTypeLookupFilter.selectedValue == null
         ? dto.quantityType = null
-        : dto.quantityType =
-        quantityTypeLookupFilter.selectedValue;
+        : dto.quantityType = quantityTypeLookupFilter.selectedValue;
     return dto;
   }
 
@@ -285,16 +294,34 @@ class ProdFilterControllerState extends State<ProdFilterController> {
   }
 
   saveFilter() {
-    ProdSavedFilterServices service = new ProdSavedFilterServices(context);
-    ProdFilterDTO filterDTO = new ProdFilterDTO();
-    filterDTO.objName = widget.parent.widget.objName;
-    filterDTO.isPublic = !isSavedFilterPrivate;
-    filterDTO.name = filterNameController.value.text;
-    ProdListFilterDTO listFilterDTO = onFilterSafe();
-    filterDTO.filterString = UrlBuilder.toUrl(listFilterDTO.toJson());
-    filterDTO.createdByUser = Util.user.id;
-    filterDTO.username = Util.user.username;
-    filterDTO.app = Util.appName;
-    service.saveData(filterDTO);
+    try {
+      ProdSavedFilterServices service = new ProdSavedFilterServices(context);
+      ProdFilterDTO filterDTO = new ProdFilterDTO();
+      filterDTO.objName = widget.parent.widget.objName;
+      filterDTO.isPublic = !isSavedFilterPrivate;
+      filterDTO.name = filterNameController.value.text;
+      ProdListFilterDTO listFilterDTO = onFilterSafe();
+      filterDTO.filterString = UrlBuilder.toUrl(listFilterDTO.toJson());
+      filterDTO.createdByUser = Util.user.id;
+      filterDTO.username = Util.user.username;
+      filterDTO.app = Util.appName;
+      service.saveData(filterDTO);
+    } catch (ex) {
+      return null;
+    }
+  }
+
+  bool isFilterEmpty() {
+    if (skuFilter.dto.exact == null &&
+        skuFilter.dto.from == null &&
+        skuFilter.dto.to == null &&
+        quantityFilter.dto.exact == null &&
+        quantityFilter.dto.from == null &&
+        quantityFilter.dto.to == null &&
+        quantityTypeLookupFilter.selectedValue == null)
+      return true;
+    else
+      return false;
   }
 }
+

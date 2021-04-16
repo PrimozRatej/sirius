@@ -12,7 +12,14 @@ void main() {
     theme: ThemeData(
       primarySwatch: Colors.blue,
       visualDensity: VisualDensity.adaptivePlatformDensity,
+        bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+            )
+        )
     ),
+
     home: MainController()
   ));
 }

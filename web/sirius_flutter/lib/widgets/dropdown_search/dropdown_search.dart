@@ -351,7 +351,7 @@ class DropdownSearchState<T> extends State<DropdownSearch<T>> {
   Future<T> _openBottomSheet(T data) {
     return showModalBottomSheet<T>(
         barrierColor: widget.popupBarrierColor,
-        isScrollControlled: true,
+        // isScrollControlled: true,
         backgroundColor: widget.popupBackgroundColor,
         shape: widget.popupShape,
         context: context,

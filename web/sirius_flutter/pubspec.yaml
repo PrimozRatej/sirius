@@ -37,6 +37,7 @@ dependencies:
   keyboard_visibility: ^0.5.2
   keyboard_manager: ^0.2.2
   flutter_speed_dial: ^2.1.1
+  transparent_image: ^2.0.0
    
 
   # The following adds the Cupertino Icons font to your application.

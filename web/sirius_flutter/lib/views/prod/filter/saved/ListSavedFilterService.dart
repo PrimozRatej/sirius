@@ -55,7 +55,6 @@ class ProdSavedFilterServices {
     catch(e){
       erHandler.dioHandle(e);
     }
-    ProdListSavedFilterDTO productsList = ProdListSavedFilterDTO.fromJson(response.data);
     isLoading = false;
   }
 

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sirius_flutter/assets/assets.dart';
 import 'package:sirius_flutter/helpers/Util.dart';
+import 'package:sirius_flutter/ixFrame/IxMaterialPageRoute/IxMaterialPageRoute.dart';
 import 'package:sirius_flutter/views/Customers.dart';
 import 'package:sirius_flutter/views/Notifications.dart';
 import 'package:sirius_flutter/views/UserFilterDemo.dart';
@@ -13,26 +16,34 @@ import 'package:sirius_flutter/views/prod/ProdListController.dart';
 import '../../helpers/SharedStorage.dart';
 import 'MenuDTO.dart';
 
+// ignore: must_be_immutable
 class MenuController extends StatefulWidget {
+  MenuState menuState;
+
   @override
-  MenuState createState() => MenuState();
+  MenuState createState() => menuState = MenuState();
 }
 
 class MenuState extends State<MenuController> {
-  // Def. value for body.
-  Widget body = DashboardController();
+  Widget body;
   MenuService service;
   Future<MenuDTO> menuDTO;
+  AppBar appBar;
 
   void initState() {
     super.initState();
     service = new MenuService(context);
     menuDTO = service.getData();
+    body = DashboardController(widget.menuState);
+    appBar = getAppBar();
+
   }
 
-  String getName(MenuDTO dto){
-    if(dto.firstName == null || dto.lastName == null) return dto.username;
-    else return dto.firstName + ' ' + dto.lastName;
+  String getName(MenuDTO dto) {
+    if (dto.firstName == null || dto.lastName == null)
+      return dto.username;
+    else
+      return dto.firstName + ' ' + dto.lastName;
   }
 
   @override
@@ -40,28 +51,22 @@ class MenuState extends State<MenuController> {
     return Scaffold(
       // Setting focus every time user push on any object used: for closing keyboard when user don't want it.
       body: new GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
-          child: body,
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: WillPopScope(
+            onWillPop: () async {
+              if (body.runtimeType == DashboardController) {
+                exit(0);
+              }
+              setState(() {
+                body = DashboardController(widget.menuState);
+              });
+              return false;
+            },
+            child: body),
       ),
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        title: Image.network(Assets.siriusNavBarLogoWhite,
-            width: 145, height: 50, fit: BoxFit.fill),
-        actions: <Widget>[
-          new IconButton(
-              icon: Icon(Icons.notification_important),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NotificationComponent()),
-                );
-              })
-        ],
-      ),
+      appBar: appBar,
       drawer: Drawer(
         child: FutureBuilder(
             future: menuDTO,
@@ -78,15 +83,15 @@ class MenuState extends State<MenuController> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(snapshot?.data?.img ?? Assets.randomImg),
+                              backgroundImage: NetworkImage(
+                                  snapshot?.data?.img ?? Assets.randomImg),
                               radius: 50.0,
                             ),
                           ),
                           Align(
                             alignment: Alignment.centerRight,
-                            child:
-                            Text(
-                                getName(snapshot?.data ?? null),
+                            child: Text(
+                              getName(snapshot?.data ?? null),
                               style: TextStyle(
                                   color: Colors.white, fontSize: 20.0),
                             ),
@@ -128,7 +133,7 @@ class MenuState extends State<MenuController> {
                       leading: Icon(Icons.dashboard),
                       title: Text('Dashboard'),
                       onTap: () {
-                        changeBody(DashboardController());
+                        changeBody(DashboardController(widget.menuState));
                       },
                     ),
                     ExpansionTile(
@@ -140,9 +145,7 @@ class MenuState extends State<MenuController> {
                         leading: Icon(Icons.shopping_basket),
                         title: Text('Items'),
                         onTap: () {
-                          changeBody(
-                            ProdListController(),
-                          );
+                          changeBody(ProdListController(widget.menuState));
                         },
                       ),
                       children: <Widget>[
@@ -265,5 +268,25 @@ class MenuState extends State<MenuController> {
         );
       },
     );
+  }
+
+  getAppBar({String objName}) {
+      return AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Image.network(Assets.siriusNavBarLogoWhite,
+            width: 145, height: 50, fit: BoxFit.fill),
+        actions: <Widget>[
+          new IconButton(
+              icon: Icon(Icons.notification_important),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  IxMaterialPageRoute(
+                      builder: (context) => NotificationComponent()),
+                );
+              })
+        ],
+      );
   }
 }

@@ -29,12 +29,12 @@ source /home/primoz/dev/sirius/db/create/cart_item.sql;
 source /home/primoz/dev/sirius/db/create/order_item.sql;
 source /home/primoz/dev/sirius/db/create/warehouse.sql;
 source /home/primoz/dev/sirius/db/create/inventory_item.sql;
-source /home/primoz/dev/sirius/db/create/app_filter.sql;
 source /home/primoz/dev/sirius/db/create/roles.sql;
 source /home/primoz/dev/sirius/db/create/user_roles.sql;
 source /home/primoz/dev/sirius/db/create/app.sql;
 source /home/primoz/dev/sirius/db/create/app_object.sql;
 source /home/primoz/dev/sirius/db/create/app_filter.sql;
+source /home/primoz/dev/sirius/db/create/app_templates.sql;
 
 #insert
 SELECT SYSDATE() as timestamp, 'Start INSERT' as decsription;
@@ -53,12 +53,12 @@ source /home/primoz/dev/sirius/db/insert/cart_item_v.sql;
 source /home/primoz/dev/sirius/db/insert/order_item_v.sql;
 source /home/primoz/dev/sirius/db/insert/warehouse_v.sql;
 source /home/primoz/dev/sirius/db/insert/inventory_item_v.sql;
-source /home/primoz/dev/sirius/db/insert/app_filter_v.sql;
 source /home/primoz/dev/sirius/db/insert/roles_v.sql;
 source /home/primoz/dev/sirius/db/insert/user_roles_v.sql;
 source /home/primoz/dev/sirius/db/insert/app_v.sql;
 source /home/primoz/dev/sirius/db/insert/app_object_v.sql;
 source /home/primoz/dev/sirius/db/insert/app_filter_v.sql;
+source /home/primoz/dev/sirius/db/insert/app_templates_v.sql;
 
 #alter
 SELECT SYSDATE() as timestamp, 'Start ALTER' as decsription;
