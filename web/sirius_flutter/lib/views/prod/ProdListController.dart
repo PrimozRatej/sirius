@@ -290,11 +290,13 @@ class ProdListState extends State<ProdListController> {
                 child: Row(
                   children: [
                     Text(urlFilterStr),
-                    new GestureDetector(
-                      onTap: () {
-                        
-                      },
-                      child: Icon(Icons.clear),
+                    Container(
+                      child: new GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: Icon(Icons.clear, size: 17,),
+                      ),
                     ),
                   ],
                 ),
