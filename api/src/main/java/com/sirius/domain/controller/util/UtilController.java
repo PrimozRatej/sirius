@@ -1,12 +1,19 @@
 package com.sirius.domain.controller.util;
 
+import com.sirius.domain.controller.db.AppObjectController;
+import com.sirius.domain.controller.db.AppTemplateController;
 import com.sirius.domain.controller.db.UserController;
+import com.sirius.domain.model.db.AppObjectDTO;
+import com.sirius.domain.model.db.AppTemplateDTO;
 import com.sirius.domain.model.db.UserDTO;
 import com.sirius.domain.model.util.FriendlyUserDTO;
 import com.sirius.domain.model.util.MenuDTO;
 import com.sirius.domain.model.ware.DashBoardDTO;
 import com.sirius.domain.model.ware.prod.ProductItemDTO;
+import com.sirius.domain.repository.db.AppObjectRepository;
+import com.sirius.domain.repository.db.AppTemplateRepository;
 import com.sirius.domain.repository.db.UserRepository;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +41,12 @@ public class UtilController {
 
     public static BCryptPasswordEncoder bCryptPasswordEncoder;
     private static UserRepository userRepository;
+    private static AppObjectRepository appObjectRepository;
 
     @Autowired
-    UtilController(UserRepository userRepository){
+    UtilController(UserRepository userRepository, AppObjectRepository appObjectRepository){
         this.userRepository = userRepository;
+        this.appObjectRepository = appObjectRepository;
     }
 
     @GetMapping("/user")
@@ -76,5 +85,17 @@ public class UtilController {
         UserDTO user = userController.getByName(principal.getName());
         FriendlyUserDTO fUser = FriendlyUserDTO.cast(user);
         return fUser;
+    }
+
+    static public int getObjectIdByName(String objName) {
+        AppObjectController objectController = new AppObjectController(appObjectRepository);
+        AppObjectDTO tempObj = objectController.getAll().stream().filter(temp -> temp.getName().equals(objName)).findFirst().orElse(null);
+        return tempObj.getId();
+    }
+
+    static public String getObjectNameById(Integer id) {
+        AppObjectController objectController = new AppObjectController(appObjectRepository);
+        AppObjectDTO tempObj = objectController.getAll().stream().filter(temp -> temp.getId().equals(id)).findFirst().orElse(null);
+        return tempObj.getName();
     }
 }

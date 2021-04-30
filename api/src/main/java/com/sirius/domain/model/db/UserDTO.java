@@ -3,6 +3,7 @@ package com.sirius.domain.model.db;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sirius.domain.controller.db.UserRolesController;
 import com.sirius.exception.ResourceNotFoundException;
+/*import org.hibernate.validator.constraints.NotBlank;*/
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

@@ -17,7 +17,7 @@ VALUES
         '2010-04-22 23:51:16',
         '2020-01-07 00:28:38',
         0,
-        'https://i.imgur.com/htQjj8d.png',
+        'https://imgur.com/Mjuypr4.png',
         'Admin',
         true
     ),
@@ -33,7 +33,7 @@ VALUES
         '2021-03-07 16:13:50',
         NULL,
         0,
-        'https://imgur.com/9kY8XfA.png',
+        'https://imgur.com/gG0dMx1.png',
         'Admin',
         true
     ),
@@ -49,7 +49,7 @@ VALUES
         '2021-03-07 16:16:30',
         NULL,
         0,
-        'https://imgur.com/NBD2oCo.png',
+        'https://imgur.com/vOGGIae.png',
         'Almost admin',
         true
     ),
@@ -65,7 +65,7 @@ VALUES
         '2021-03-07 16:16:35',
         NULL,
         0,
-        'https://imgur.com/2DjaLVK.png',
+        'https://imgur.com/hUOkdQJ.png',
         'User',
         true
     ),
@@ -81,7 +81,7 @@ VALUES
         '2021-03-07 16:16:42',
         NULL,
         0,
-        'https://imgur.com/3quUaEo.png',
+        'https://imgur.com/27r4wpL.png',
         'User',
         true
     ),
@@ -97,7 +97,7 @@ VALUES
         '2021-03-07 16:16:46',
         NULL,
         0,
-        'https://imgur.com/jTpS64U.png',
+        'https://imgur.com/YsoLGv8',
         'User',
         true
     ),
@@ -113,7 +113,7 @@ VALUES
         '2021-03-07 16:16:51',
         NULL,
         0,
-        'https://imgur.com/J25jDgF.png',
+        'https://imgur.com/ADTiWKB',
         'User',
         false
     );

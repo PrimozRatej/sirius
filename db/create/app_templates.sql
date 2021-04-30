@@ -3,7 +3,7 @@ create table app_templates (
 	id INT AUTO_INCREMENT,
     app_id INT,
     obj_id INT,
-	name VARCHAR(50) NOT NULL UNIQUE,
+	name VARCHAR(50) NOT NULL,
     file_extension VARCHAR(20),
     file_data TEXT,
     description VARCHAR(400),

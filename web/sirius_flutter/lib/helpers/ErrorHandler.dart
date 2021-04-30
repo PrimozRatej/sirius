@@ -5,6 +5,7 @@ import 'package:sirius_flutter/views/error/ServerSideErrorController.dart';
 import 'package:sirius_flutter/views/login/LoginController.dart';
 import 'package:sirius_flutter/views/main/MainController.dart';
 
+import 'IxScaffoldMessenger.dart';
 import 'Util.dart';
 
 class ErrorHandler {
@@ -95,7 +96,26 @@ class ErrorHandler {
         );
       }
     }
+    if(pageType == PageType.DOWNLOAD){
+      if (error.response.statusCode == 404) {
+        IxScaffoldMessenger.show(context, "Such a file does not exist.", type: MsgType.ERROR);
+      }
+
+      if (error.response.statusCode == 500) {
+        IxScaffoldMessenger.show(context, "Server error", type: MsgType.ERROR);
+      }
+
+      if (error.response.statusCode == 403) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => LoginController(),
+          ),
+              (route) => false,
+        );
+      }
+    }
   }
 }
 
-enum PageType { LOGIN, SIGN_UP, DEFAULT, LIST_VIEW, OBJECT_VIEW, LOOKUP }
+enum PageType { LOGIN, SIGN_UP, DEFAULT, LIST_VIEW, OBJECT_VIEW, LOOKUP, DOWNLOAD }

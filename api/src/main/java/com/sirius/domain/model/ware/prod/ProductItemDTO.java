@@ -1,5 +1,8 @@
 package com.sirius.domain.model.ware.prod;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigInteger;
 
 public class ProductItemDTO {
@@ -77,4 +80,5 @@ public class ProductItemDTO {
     public void setQuaType(String quaType) {
         this.quaType = quaType;
     }
+
 }

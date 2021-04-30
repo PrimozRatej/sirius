@@ -7,9 +7,9 @@ import 'package:sirius_flutter/helpers/UrlBuilder.dart';
 import 'package:sirius_flutter/ixFrame/IxList/IxListService.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:sirius_flutter/views/prod/export/AppTemplateListDTO.dart';
+import 'package:sirius_flutter/views/prod/export/ExportListDTO.dart';
 
-class AppTemplateListService implements IxObjectListService{
+class ExportListService implements IxObjectListService{
 
   BuildContext context;
 
@@ -19,28 +19,27 @@ class AppTemplateListService implements IxObjectListService{
 
   bool isLoading = true;
 
-  String path = "/api/domain/app_template";
+  String path = "/api/ware/exports";
 
-  AppTemplateListService(BuildContext context) {
+  ExportListService(BuildContext context) {
     this.context = context;
     erHandler = new ErrorHandler(context, PageType.DEFAULT);
     dio = new DioClient().dio;
   }
 
   @override
-  Future<AppTemplateListDTO> getData([dto]) async {
+  Future<ExportListDTO> getData([dto]) async {
     isLoading = true;
     String url = Assets.domain + path;
-    if (dto != null) url = url + UrlBuilder.toUrl(dto.toJson());
     Response response = new Response();
     try{
-      response = await dio.get(url);
+      response = await dio.post(url, data: dto);
     }
     catch(e){
       erHandler.dioHandle(e);
     }
-    AppTemplateListDTO productsList = AppTemplateListDTO.fromJson(response.data);
+    ExportListDTO list = ExportListDTO.fromJson(response.data);
     isLoading = false;
-    return productsList;
+    return list;
   }
 }

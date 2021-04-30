@@ -1,6 +1,7 @@
 package com.sirius.domain.controller.ware.prod;
 
 import com.sirius.domain.controller.helpers.StringHelper;
+import com.sirius.domain.controller.util.UtilController;
 import com.sirius.domain.model.ware.prod.ProductItemDTO;
 import com.sirius.domain.model.ware.prod.ProductListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.sirius.domain.controller.db.ProductController;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -41,6 +43,7 @@ public class ProdListController {
             @RequestParam(required = false) Integer quantityExact,
             @RequestParam(required = false) String quantityType
     ) throws IOException, InterruptedException {
+        // TODO when there is and error at getting the list of items mobile application list keep one spinning like it is still waiting for the data.
         Thread.sleep(2 * 1000);
         String queryStr = new String(Files.readAllBytes(Paths.get("./src/main/resources/ware/products.sql")), StandardCharsets.UTF_8);
         Query query = entityManager.createNativeQuery(queryStr);
@@ -102,6 +105,22 @@ public class ProdListController {
 
         // Get number of all in DB.
         long count = controller.getAll().stream().count();
+        ProductListDTO dto = new ProductListDTO();
+        dto.setFilteredList(list);
+        dto.setCountAlInDB((int) count);
+        // Get list
+        return dto;
+    }
+    @Transactional
+    public ProductListDTO getAll(EntityManager entityManager) throws IOException, InterruptedException {
+        String queryStr = new String(Files.readAllBytes(Paths.get("./src/main/resources/ware/products.sql")), StandardCharsets.UTF_8);
+        this.entityManager = entityManager;
+        Query query = entityManager.createNativeQuery(queryStr);
+        List<ProductItemDTO> list = new ArrayList<>();
+        for (Object obj : query.getResultList())
+            list.add(new ProductItemDTO((Object[]) obj));
+        // Get number of all in DB.
+        long count = list.stream().count();
         ProductListDTO dto = new ProductListDTO();
         dto.setFilteredList(list);
         dto.setCountAlInDB((int) count);
